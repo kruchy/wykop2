@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Wykop2 server", "Wykop2 server\Wykop2 server.njsproj", "{A253D15E-1328-495C-9AAF-CAF6A4A57BAE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A253D15E-1328-495C-9AAF-CAF6A4A57BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A253D15E-1328-495C-9AAF-CAF6A4A57BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A253D15E-1328-495C-9AAF-CAF6A4A57BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A253D15E-1328-495C-9AAF-CAF6A4A57BAE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

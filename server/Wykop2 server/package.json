@@ -1,0 +1,9 @@
+{
+  "name": "wykop2-server",
+  "version": "0.0.0",
+  "description": "Wykop2 server",
+  "main": "server.js",
+  "author": {
+    "name": "Krzysiek"
+  }
+}
