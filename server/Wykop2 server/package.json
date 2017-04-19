@@ -3,9 +3,17 @@
   "version": "0.0.0",
   "description": "Wykop2 server",
   "main": "server.js",
-  "author": {
-    "name": "Martyna Jabłońska \nPaweł Jaroch \n Krzysztof Misiak"
-  },
+  "contributors": [
+    {
+      "name": "Martyna Jabłońska "
+    },
+    {
+      "name": "Paweł Jaroch "
+    },
+    {
+      "name": "Krzysztof Misiak"
+    }
+  ],
   "scripts": {
     "start": "node ./server"
   },
