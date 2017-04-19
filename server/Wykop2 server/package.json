@@ -7,7 +7,7 @@
     "name": "Martyna Jabłońska \nPaweł Jaroch \n Krzysztof Misiak"
   },
   "scripts": {
-    "start": "node ./www"
+    "start": "node ./server"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
