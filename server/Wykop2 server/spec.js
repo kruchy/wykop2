@@ -1,20 +1,20 @@
 var request = require('supertest');
 
 describe('loading express', function () {
-    var login;
+    var server;
     beforeEach(function () {
-        login = require('./server')
+        server = require('./server')
     });
     afterEach(function () {
-        login.close();
+        server.close();
     });
     it('responds to GET /login',function testSlash(done) {
-        request(login)
+        request(server)
             .get('/login')
             .expect(200,done);
     });
     it('responds to POST /login',function testPostSlash(done) {
-        request(login)
+        request(server)
             .post('/login')
             .expect(200,done);
     });
