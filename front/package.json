@@ -1,13 +1,14 @@
 {
-  "name": "snake",
+  "name": "wykop2",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "baconjs": "^0.7.73",
+    "classnames": "^2.2.5",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "underscore": "^1.8.3",
-    "classnames": "^2.2.5",
-    "baconjs": "^0.7.73"
+    "react-router": "^2.6.0",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"

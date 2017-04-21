@@ -1,21 +1,23 @@
-import React, {Component} from "react";
+import React from "react";
 import "./App.css";
-import Bacon from "baconjs";
+import NavBar from './navbar/NavBar.js';
+import Header from './header/Header.js';
+import Content from './content/Content.js';
 
-export default class App extends Component {
 
-    state = {
-    };
+var mainContainerStyle = {
+    fontFamily: "'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif",
+};
 
-    componentDidMount() {
-        const ticks = Bacon.interval(100);
-
-    }
+export default class App extends React.Component {
 
     render() {
         return (
-            <div>Hello werld</div>
+            <div className="mainContainer" style={mainContainerStyle}>
+                <NavBar />
+                <Header />
+                {this.props.children}
+            </div>
         );
     }
-}
-
+};
