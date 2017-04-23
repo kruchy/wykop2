@@ -1,17 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-
-var postStyle = {
-    width: '1000px',
-    margin: '0 auto',
-};
-
-var dateStyle = {
-    fontFamily: "Lora,'Times New Roman',serif",
-    fontSize: '12px',
-    color: 'gray',
-};
+import "../../css/App.css";
 
 export default class PostItem extends React.Component {
     constructor(props) {
@@ -26,7 +16,7 @@ export default class PostItem extends React.Component {
     render() {
         var thisDate = new Date(this.props.date);
         return (
-            <div className="post" style={postStyle}>
+            <div className="postContent">
                 <Link to={`/post/${this.props.id}`}>
                     <h1 className="title" id={this.props.id}>
                         {this.props.title}
@@ -35,7 +25,7 @@ export default class PostItem extends React.Component {
                 </Link>
                 <br>
                 </br>
-                <p style={dateStyle}>
+                <p className="datePost">
                     {"Posted on " + thisDate.toString()}
                 </p>
                 <hr>

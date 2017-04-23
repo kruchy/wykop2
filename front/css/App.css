@@ -1,0 +1,55 @@
+.mainContainer {
+    font-family: "'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif";
+}
+
+.datePost {
+    font-family: "Lora,'Times New Roman',serif";
+    font-size: 12px;
+    color: gray;
+}
+
+.postContent {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.content {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.navBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+    color: white;
+    float: left;
+}
+
+.navMenu {
+    font-size: 18px;
+    float: right;
+}
+
+.navItem {
+    text-decoration: none;
+    color: white;
+    padding: .2em 1em;
+}
+
+.headerContent {
+    padding: 100px 0 50px;
+    color: white;
+    margin-top: 0;
+    text-align: center;
+}
+
+.header {
+    background-color: #808080;
+    background-attachment: scroll;
+    background-size: cover;
+    margin-bottom: 50px;
+    width: 100%;
+}

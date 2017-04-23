@@ -1,16 +1,10 @@
-
-
 import React from 'react';
-
-var pagerStyle = {
-    width: '1000px',
-    margin: '0 auto',
-};
+import "../../css/App.css";
 
 export default class Pager extends React.Component {
     render() {
         return (
-            <div className="pager" style={pagerStyle}>
+            <div className="postContent">
                 <a href="" style={{ textDecoration: 'none', color: 'black', float: 'right' }}>
                     OLDER POSTS
 				</a>

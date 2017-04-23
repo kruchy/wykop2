@@ -7,7 +7,6 @@ import routes from './routes';
 export default class AppRoutes extends React.Component {
     render() {
         return (<div>
-            <p> asdasda </p>
             <Router history={browserHistory} routes={routes} onUpdate={() => window.scrollTo(0, 0)} />
             </div>
         );

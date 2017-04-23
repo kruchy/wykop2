@@ -1,44 +1,27 @@
 
 import React from 'react';
+import "../../css/App.css";
 
-var navBarStyle = {
-    position: 'absolute',
-    top: '0',
-    left: '0',
-    width: '100%',
-    zIndex: '3',
-    color: 'white',
-    float: 'left',
-};
 
 export default class NavBar extends React.Component {
     render() {
-        var navMenuStyle = {
-            fontSize: '18px',
-            float: 'right',
-        };
 
-        var navBulletStyle = {
-            textDecoration: 'none',
-            color: 'white',
-            padding: '.2em 1em',
-        };
 
         return (
-            <div className="navBar" style={navBarStyle}>
-                <ul style={navMenuStyle}>
+            <div className="navBar">
+                <ul className="navMenu">
                     <li style={{ display: 'inline' }}>
-                        <a href="./index.html" style={navBulletStyle}>
+                        <a href="./index.html" className="navItem">
                             HOME
             </a>
                     </li>
                     <li style={{ display: 'inline' }}>
-                        <a href="" style={navBulletStyle}>
+                        <a href="" className="navItem">
                             ABOUT
             </a>
                     </li>
                     <li style={{ display: 'inline' }}>
-                        <a href="" style={navBulletStyle}>
+                        <a href="" className="navItem">
                             CONTACT
             </a>
                     </li>

@@ -1,16 +1,8 @@
 
 import React from 'react';
+import "../../css/App.css";
 
-var dateStyle = {
-    fontFamily: "Lora,'Times New Roman',serif",
-    fontSize: '12px',
-    color: 'gray',
-};
 
-var postContentStyle = {
-    width: '1000px',
-    margin: '0 auto',
-};
 
 export default class PostContent extends React.Component {
     constructor(props) {
@@ -31,7 +23,7 @@ export default class PostContent extends React.Component {
     render() {
         var thisDate = new Date(this.state.date);
         return (
-            <div className="postContent" style={postContentStyle}>
+            <div className="postContent">
                 <h1>
                     {this.state.title}
                 </h1>
@@ -40,7 +32,7 @@ export default class PostContent extends React.Component {
                 {this.state.content}
                 <br>
                 </br>
-                <p style={dateStyle}>
+                <p className="datePost">
                     {"Posted on " + thisDate.toUTCString()}
                 </p>
             </div>
