@@ -8,6 +8,11 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var login = require('./routes/login');
 var posts = require('./routes/posts');
+var register = require('./routes/register');
+var mongo = require('mongodb');
+var monk = require('monk');
+
+var mongoose = require("mongoose");
 
 var app = express();
 
@@ -21,9 +26,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', index);
 app.use('/login', login);
 app.use('/posts', posts);
+app.use('/register', register);
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -37,8 +44,6 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
 });
 
 module.exports = app;
