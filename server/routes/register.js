@@ -1,12 +1,26 @@
 var express = require('express');
 var router = express.Router();
+var models = require('../models/models');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
     var str = {id: 100, nick: "test"};
     var userName = req.body.username;
     var userEmail = req.body.useremail;
-    var collection = db.get('usercollection');
+
+    var users = models.User;
+
+    var user = new User(
+        {
+            nick:userName,
+            email:userEmail
+        }
+    );
+    user.save(function (error) {
+        if(error)
+            res.status(500).end("There was a problem adding the information to the database.");
+
+    })
 
     // Submit to the DB
     collection.insert({
@@ -15,12 +29,12 @@ router.get('/', function (req, res, next) {
     }, function (err, doc) {
         if (err) {
             // If it failed, return error
-            res.send("There was a problem adding the information to the database.");
         }
         else {
             // And forward to success page
             res.status(200)
-                .end(JSON.stringify(str));
+            res.setHeader('Content-Type', 'application/json')
+                .json(str);
         }
     });
 

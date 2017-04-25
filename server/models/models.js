@@ -13,7 +13,7 @@ mongoose.connect(config.mongoURI[process.env.NODE_ENV], function(err, res) {
 });
 
 var db = mongoose.connection;
-s
+
 db.on("error", console.error.bind(console, "Connection error:"));
 db.once("open", function (callback) {
     console.log("Connection Succeeded.");
