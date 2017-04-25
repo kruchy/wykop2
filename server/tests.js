@@ -18,7 +18,7 @@ describe('loading express', function () {
     afterEach(function () {
         server.close();
     });
-    it('responds to GET /login', function testSlash(done) {
+    it('responds to GET /login', function (done) {
         chai.request(server)
             .get('/login')
             .end(function (err, res) {
@@ -27,14 +27,13 @@ describe('loading express', function () {
                 done();
             });
     });
-    it('responds to POST /login', function testPostSlash(done) {
+    it('responds to POST /login', function (done) {
         chai.request(server)
             .post('/login')
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.should.be.json;
-                done();
-            });
+            }).then(done());
     });
 });
 
@@ -48,12 +47,13 @@ describe('Getting posts', function () {
 
         var user = new User(
             {
-                nick:"Bruce",
-                email:"brucewayne@test.com"
+                nick: "Bruce",
+                email: "brucewayne@test.com"
             }
         );
         user.save(function (err) {
         });
+
 
         new Post(
             {
@@ -70,7 +70,7 @@ describe('Getting posts', function () {
         done();
     });
 
-    it('should get all posts GET', function (done) {
+    it('Should get all posts GET', function (done) {
         chai.request(server)
             .get('/posts')
             .end(function (err, res) {

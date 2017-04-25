@@ -14,7 +14,7 @@ const register = require('./routes/register');
 const monk = require('monk');
 const debug = require('debug')('untitled:server');
 const http = require('http');
-
+const config = require('./config');
 const mongoose = require("mongoose");
 
 
@@ -23,6 +23,8 @@ const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.set('superSecret',config.secret);
+
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
