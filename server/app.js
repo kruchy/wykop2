@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const index = require('./routes/index');
+const users = require('./routes/users');
 const login = require('./routes/login');
 const posts = require('./routes/posts');
 const register = require('./routes/register');
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', index);
+app.use('/user', users);
 app.use('/login', login);
 app.use('/posts', posts);
 app.use('/register', register);
