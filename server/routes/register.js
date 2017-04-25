@@ -18,9 +18,11 @@ router.get('/', function (req, res, next) {
     );
     user.save(function (error) {
         if(error)
-            res.status(500).end("There was a problem adding the information to the database.");
+            res.status(500).json({
+                error : "There was a problem adding the information to the database."
+            });
 
-    })
+    });
 
     // Submit to the DB
     collection.insert({
@@ -33,7 +35,6 @@ router.get('/', function (req, res, next) {
         else {
             // And forward to success page
             res.status(200)
-            res.setHeader('Content-Type', 'application/json')
                 .json(str);
         }
     });

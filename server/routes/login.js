@@ -7,20 +7,20 @@ var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 function handleLogin (req, res) {
-    res.status(200).send('Sie loguj');
+    res.status(200).json('Sie loguj');
 }
 
 /* GET users listing. */
 router.get('/', handleLogin);
 
-router.post('/', urlencodedParser, function (req, res) {
+router.post('/',function (req, res) {
     response = {
         log: req.body.login,
         pass: req.body.password
     };
 
     console.log(response);
-    res.status(200).send('Sie loguj');
+    res.status(200).json('Sie loguj');
 });
 
 module.exports = router;

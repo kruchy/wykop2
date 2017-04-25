@@ -3,8 +3,24 @@ var models = require('../models/models');
 var router = express.Router();
 
 
+
+
 router.get("/:id", function (req, res) {
     console.log(req.params.id);
+    var query = models.Post.find({});
+    var found = findPost(query);
+    if (!found) {
+        res.status(500)
+            .json({error: "Problem retrieving post from server"});
+    }
+    else {
+        res.status(200)
+            .json(found);
+    }
+
+});
+
+router.get("/", function (req, res) {
     var query = models.Post.find({});
     var found = findPost(query);
     if (!found) {
