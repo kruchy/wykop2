@@ -15,7 +15,7 @@
     }
   ],
   "scripts": {
-    "start": "node ./server",
+    "start": "node ./app",
     "test": "mocha lib/**/**.spec.js"
   },
   "dependencies": {
