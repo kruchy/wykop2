@@ -1,24 +1,24 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
-var index = require('./routes/index');
-var login = require('./routes/login');
-var posts = require('./routes/posts');
-var register = require('./routes/register');
+const index = require('./routes/index');
+const login = require('./routes/login');
+const posts = require('./routes/posts');
+const register = require('./routes/register');
 
-var monk = require('monk');
-var debug = require('debug')('untitled:server');
-var http = require('http');
+const monk = require('monk');
+const debug = require('debug')('untitled:server');
+const http = require('http');
 
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 
 
-var app = express();
+const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -37,7 +37,7 @@ app.use('/posts', posts);
 app.use('/register', register);
 
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
@@ -48,10 +48,10 @@ app.use(function(err, req, res, next) {
 });
 
 
-var port = normalizePort(process.env.PORT || '3000');
+let port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-var server = http.createServer(app);
+const server = http.createServer(app);
 
 
 server.listen(port);
@@ -60,7 +60,7 @@ server.on('listening', onListening);
 
 
 function normalizePort(val) {
-    var port = parseInt(val, 10);
+    const port = parseInt(val, 10);
 
     if (isNaN(port)) {
         // named pipe
@@ -81,7 +81,7 @@ function onError(error) {
         throw error;
     }
 
-    var bind = typeof port === 'string'
+    const bind = typeof port === 'string'
         ? 'Pipe ' + port
         : 'Port ' + port;
 
@@ -101,8 +101,8 @@ function onError(error) {
 }
 app.server = server;
 function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === 'string'
+    const addr = server.address();
+    const bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
     debug('Listening on ' + bind);

@@ -1,17 +1,16 @@
-var request = require('supertest');
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var mongoose = require("mongoose");
-var Post = require('./models/models').Post;
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const mongoose = require("mongoose");
+const Post = require('./models/models').Post;
 
 
-var should = chai.should();
+const should = chai.should();
 chai.use(chaiHttp);
 
 process.env.NODE_ENV = 'test';
 
 describe('loading express', function () {
-    var server;
+    let server;
     beforeEach(function () {
         server = require('./app').server;
     });
@@ -23,7 +22,7 @@ describe('loading express', function () {
             .get('/login')
             .end(function (err, res) {
                 res.should.have.status(200);
-                res.should.be.jsons;
+                res.should.be.json;
                 done();
             });
     });
@@ -39,7 +38,7 @@ describe('loading express', function () {
 });
 
 describe('Getting posts', function () {
-    var server;
+    let server;
     beforeEach(function (done) {
         server = require('./app').server;
 

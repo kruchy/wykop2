@@ -47,8 +47,7 @@
 }
 
 .header {
-    background-color: #808080;
-    background-attachment: scroll;
+    background: #808080 scroll;
     background-size: cover;
     margin-bottom: 50px;
     width: 100%;

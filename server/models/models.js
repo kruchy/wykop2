@@ -1,8 +1,8 @@
-var mongoose = require("mongoose");
-var Users = require("./User");
-var Posts = require("./Post");
+const mongoose = require("mongoose");
+const Users = require("./User");
+const Posts = require("./Post");
 
-var config = require('../config');
+const config = require('../config');
 mongoose.Promise = global.Promise;
 mongoose.connect(config.mongoURI[process.env.NODE_ENV], function(err, res) {
     if(err) {
@@ -12,7 +12,7 @@ mongoose.connect(config.mongoURI[process.env.NODE_ENV], function(err, res) {
     }
 });
 
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "Connection error:"));
 db.once("open", function (callback) {

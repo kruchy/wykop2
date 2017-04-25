@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 // Create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({extended: false});
+const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 function handleLogin (req, res) {
     res.status(200).json('Sie loguj');

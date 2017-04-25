@@ -1,19 +1,19 @@
-var express = require('express');
-var router = express.Router();
-var models = require('../models/models');
+const express = require('express');
+const router = express.Router();
+const models = require('../models/models');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    var str = {id: 100, nick: "test"};
-    var userName = req.body.username;
-    var userEmail = req.body.useremail;
+    const str = {id: 100, nick: "test"};
+    const userName = req.body.username;
+    const userEmail = req.body.useremail;
 
-    var users = models.User;
+    const users = models.User;
 
-    var user = new User(
+    const user = new User(
         {
-            nick:userName,
-            email:userEmail
+            nick: userName,
+            email: userEmail
         }
     );
     user.save(function (error) {

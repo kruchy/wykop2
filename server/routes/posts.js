@@ -1,11 +1,11 @@
-var express = require('express');
-var models = require('../models/models');
-var router = express.Router();
+const express = require('express');
+const models = require('../models/models');
+const router = express.Router();
 
 
 router.get("/:id", function (req, res) {
     console.log(req.params.id);
-    var query = models.Post.find({}, function (err, post) {
+    const query = models.Post.find({}, function (err, post) {
         if (err) {
             res.status(500)
                 .json({error: "Problem retrieving post from server", reason: err});
@@ -22,7 +22,7 @@ router.get("/", function (req, res) {
         function (err, posts) {
             if (err) {
                 res.status(500)
-                    .json({error: "Problem retrieving post from server",reason:err});
+                    .json({error: "Problem retrieving post from server", reason: err});
             }
             else {
                 res.status(200)
@@ -34,9 +34,9 @@ router.get("/", function (req, res) {
 
 
 router.post("/createPost", function (req, res) {
-    var author = req.body.author;
-    var content = req.body.content;
-    var post = new models.Post(
+    const author = req.body.author;
+    const content = req.body.content;
+    const post = new models.Post(
         {
             author: author,
             content: content

@@ -2,7 +2,7 @@
 import React from 'react';
 import PostItem from './PostItem.js';
 
-var mockData = {
+const mockData = {
     "data": [
         {
             "id": "0",
@@ -75,7 +75,7 @@ export default class PostList extends React.Component {
     }
 
     render() {
-        var posts = this.state.data.map(function (post) {
+        const posts = this.state.data.map(function (post) {
             return (
                 <PostItem title={post["title"]} date={post["date"]} key={"key" + post["id"]} id={post["id"]}>
                     {post["summary"]}
