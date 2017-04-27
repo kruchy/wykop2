@@ -6,9 +6,13 @@ import HeadingSite from './HeadingSite.js';
 export default class Header extends React.Component {
     render() {
         return (
-            <div className="header">
+        //    <div className="header">
+            <header className="header-login-signup">
+
                 <HeadingSite />
-            </div>
+
+            </header>
+   //           </div>
         );
     }
 };

@@ -8,25 +8,17 @@ export default class NavBar extends React.Component {
 
 
         return (
-            <div className="navBar">
-                <ul className="navMenu">
-                    <li style={{ display: 'inline' }}>
-                        <a href="./index.html" className="navItem">
-                            HOME
-            </a>
-                    </li>
-                    <li style={{ display: 'inline' }}>
-                        <a href="" className="navItem">
-                            ABOUT
-            </a>
-                    </li>
-                    <li style={{ display: 'inline' }}>
-                        <a href="" className="navItem">
-                            CONTACT
-            </a>
-                    </li>
-                </ul>
-            </div>
+            <div>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#" className="selected">Blog</a>
+            </nav>
+
+            <ul>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Sign up</a></li>
+            </ul>
+                </div>
         );
     }
 };
