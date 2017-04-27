@@ -15,18 +15,26 @@
     }
   ],
   "scripts": {
-    "start": "node ./server",
-    "test": "mocha lib/**/**.spec.js"
+    "start": "node ./app",
+    "test": "mocha -R spec tests.js"
   },
   "dependencies": {
+    "basic-auth-mongoose": "^0.1.1",
     "body-parser": "~1.17.1",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "express-basic-auth": "^1.0.1",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^7.4.0",
+    "mocha": "~3.2.0",
+    "mongodb": "latest",
+    "mongoose": "^4.9.6",
+    "monk": "^4.0.0",
     "morgan": "~1.8.1",
     "serve-favicon": "~2.4.2",
-    "mocha": "~3.2.0",
     "supertest": "~3.0.0"
   }
 }

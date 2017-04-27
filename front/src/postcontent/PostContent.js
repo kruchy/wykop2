@@ -21,7 +21,7 @@ export default class PostContent extends React.Component {
     }
 
     render() {
-        var thisDate = new Date(this.state.date);
+        const thisDate = new Date(this.state.date);
         return (
             <div className="postContent">
                 <h1>

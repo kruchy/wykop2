@@ -14,7 +14,7 @@ export default class PostItem extends React.Component {
 
 
     render() {
-        var thisDate = new Date(this.props.date);
+        const thisDate = new Date(this.props.date);
         return (
             <div className="postContent">
                 <Link to={`/post/${this.props.id}`}>
