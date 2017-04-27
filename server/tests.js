@@ -10,22 +10,13 @@ chai.use(chaiHttp);
 
 process.env.NODE_ENV = 'test';
 
-describe('loading express', function () {
+describe('Login tests', function () {
     let server;
     beforeEach(function () {
         server = require('./app').server;
     });
     afterEach(function () {
         server.close();
-    });
-    it('responds to GET /login', function (done) {
-        chai.request(server)
-            .get('/login')
-            .end(function (err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                done();
-            });
     });
     it('responds to POST /login', function (done) {
         chai.request(server)
@@ -47,11 +38,15 @@ describe('Getting posts', function () {
 
         var user = new User(
             {
-                nick: "Bruce",
-                email: "brucewayne@test.com"
+                username: "Bruce",
+                email: "brucewayne@test.com",
+                password: 'test',
+                admin: false
             }
         );
         user.save(function (err) {
+            if (err)
+                throw err;
         });
 
 
@@ -88,7 +83,7 @@ describe('Getting posts', function () {
 
     it('Should get user with one post from GET', function (done) {
         chai.request(server)
-            .get('/user/')
+            .get('/user')
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.should.be.json;

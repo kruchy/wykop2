@@ -4,7 +4,7 @@ const Posts = require("./Post");
 
 const config = require('../config');
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongoURI[process.env.NODE_ENV], function(err, res) {
+mongoose.connect(config.mongoURI[process.env.NODE_ENV || 'development'], function(err, res) {
     if(err) {
         console.log('Error connecting to the database. ' + err);
     } else {
@@ -21,3 +21,4 @@ db.once("open", function (callback) {
 
 module.exports.Post = mongoose.model("Post", Posts.postSchema);
 module.exports.User = mongoose.model("User", Users.userSchema);
+

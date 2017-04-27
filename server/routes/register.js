@@ -1,44 +1,53 @@
 const express = require('express');
 const router = express.Router();
-const models = require('../models/models');
+var User = require("../models/models.js").User;
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-    const str = {id: 100, nick: "test"};
+router.post('/', function (req, res, next) {
     const userName = req.body.username;
-    const userEmail = req.body.useremail;
-
-    const users = models.User;
+    const userEmail = req.body.email;
+    const userPasword = req.body.password;
 
     const user = new User(
         {
-            nick: userName,
-            email: userEmail
+            username: userName,
+            email: userEmail,
+            password: userPasword,
+            admin: false
+
         }
     );
     user.save(function (error) {
-        if(error)
+
+        if (error) {
+
             res.status(500).json({
-                error : "There was a problem adding the information to the database."
+
+                error: "There was a problem adding the information to the database.", reason: error
             });
-
-    });
-
-    // Submit to the DB
-    collection.insert({
-        "username": userName,
-        "email": userEmail
-    }, function (err, doc) {
-        if (err) {
-            // If it failed, return error
-        }
-        else {
-            // And forward to success page
-            res.status(200)
-                .json(str);
+        } else {
+            res.status(200).json(user);
         }
     });
+
 
 });
 
+var algorithm = 'aes-256-ctr';
+var privateKey = '37LvDSm4XvjYOh9Y';
+
+function decrypt(password) {
+    var decipher = crypto.createDecipher(algorithm, privateKey);
+    var dec = decipher.update(password, 'hex', 'utf8');
+    dec += decipher.final('utf8');
+    return dec;
+}
+
+// method to encrypt data(password)
+function encrypt(password) {
+    var cipher = crypto.createCipher(algorithm, privateKey);
+    var crypted = cipher.update(password, 'utf8', 'hex');
+    crypted += cipher.final('hex');
+    return crypted;
+}
 module.exports = router;
