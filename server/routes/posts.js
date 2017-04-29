@@ -19,18 +19,16 @@ router.get("/:id", function (req, res) {
 });
 
 router.get("/", function (req, res) {
-    models.Post.find({},
-        function (err, posts) {
-            if (err) {
-                res.status(500)
-                    .json({error: "Problem retrieving post from server", reason: err});
-            }
-            else {
-                res.status(200)
-                    .json(posts);
-            }
-        });
-
+    models.Post.find({}).populate('author').exec(function (err, posts) {
+        if (err) {
+            res.status(500)
+                .json({success: false, error: "Problem retrieving post from server", reason: err});
+        }
+        else {
+            res.status(200)
+                .json({success: true, posts: posts});
+        }
+    });
 });
 
 
@@ -43,7 +41,7 @@ router.post("/createPost", function (req, res) {
             content: content
         }
     );
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    const token = req.body.token || req.query.token || req.headers['x-access-token'];
     if (token) {
 
         jwt.verify(token, config.secret, function (err, decoded) {

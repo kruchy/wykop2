@@ -14,14 +14,11 @@ function authenticate(username, password, callback) {
     if (!username || !password) {
         callback(null, false);
     }
-    User.findOne({
-        username: username
-    }, function (err, user) {
+    User.findUser(username, function (err, user) {
         if (!err && user) {
             callback(null, user.authenticate(password));
         }
         else {
-            console.log(username);
             try {
                 callback(null, false);
             } catch (err) {
@@ -33,30 +30,30 @@ function authenticate(username, password, callback) {
 
 router.post('/', basicAuth({authorizer: authenticate, authorizeAsync: true}), function (req, res) {
 
-    console.log('logged');
-    User.findOne({
-        name: req.body.username
-    }, function (err, user) {
-        if (err) {
-            res.json({
-                success: false,
-                error: "Error getting user from server", reason: error
-            });
-        }
-        try {
-            const token = jwt.sign(user, config.secret);
-            res.status(200).json({
-                success: true,
-                token: token
-            })
-        } catch (error) {
-            res.json({
-                success: false,
-                error: "Error during authentication", reason: error
-            });
-        }
+    User.findUser(req.auth.user, function (err, user) {
+            if (err) {
+                res.status(500).json({
+                    success: false,
+                    error: "Error getting user from server", reason: error
+                });
+                return;
+            }
+            try {
+                const token = jwt.sign(user, config.secret, {expiresIn: 60 * 60 * 24});
+                res.status(200).json({
+                    success: true,
+                    token: token
+                })
+            } catch (error) {
+                res.status(500).json({
+                    success: false,
+                    error: "Error creating token", reason: error
+                });
+            }
 
-    });
-});
+        }
+    );
+})
+;
 
 module.exports = router;
