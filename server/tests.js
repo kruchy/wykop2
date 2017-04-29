@@ -72,6 +72,15 @@ describe('Login tests', function () {
                 done()
             });
     });
+    it('fails gracefully when user is not found', function (done) {
+        chai.request(server)
+            .post('/login')
+            .auth('Bruce', 'test')
+            .end(function (err, res) {
+                res.should.have.status(401);
+                done()
+            });
+    });
 });
 
 function clearDatabase() {

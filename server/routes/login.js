@@ -36,19 +36,21 @@ router.post('/', basicAuth({authorizer: authenticate, authorizeAsync: true}), fu
                     success: false,
                     error: "Error getting user from server", reason: error
                 });
-                return;
+
             }
-            try {
-                const token = jwt.sign(user, config.secret, {expiresIn: 60 * 60 * 24});
-                res.status(200).json({
-                    success: true,
-                    token: token
-                })
-            } catch (error) {
-                res.status(500).json({
-                    success: false,
-                    error: "Error creating token", reason: error
-                });
+            else {
+                try {
+                    const token = jwt.sign(user, config.secret, {expiresIn: 60 * 60 * 24});
+                    res.status(200).json({
+                        success: true,
+                        token: token
+                    })
+                } catch (error) {
+                    res.status(500).json({
+                        success: false,
+                        error: "Error creating token", reason: error
+                    });
+                }
             }
 
         }
