@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import "../../css/App.css";
 
 export default class PostItem extends React.Component {
     constructor(props) {
@@ -12,25 +11,42 @@ export default class PostItem extends React.Component {
         };
     }
 
+    link(props) {
+     return   <Link to={`/post/${this.props.data.id}`}>
+               {props}
+        </Link>
+}
+
 
     render() {
         const thisDate = new Date(this.props.date);
         return (
-            <div className="postContent">
-                <Link to={`/post/${this.props.id}`}>
-                    <h1 className="title" id={this.props.id}>
-                        {this.props.title}
-                    </h1>
-                    {this.props.children}
-                </Link>
-                <br>
-                </br>
-                <p className="datePost">
-                    {"Posted on " + thisDate.toString()}
-                </p>
-                <hr>
-                </hr>
-            </div>
+            <div className="box1">
+                <h3>
+                    {this.link(this.props.data.title)}
+                </h3> 
+
+                <span>By {this.props.data.author} < span className="comments">8 Comments</span></span>
+
+                <span className="vote">
+                    <i className="glyphicon glyphicon-chevron-up" ></i>
+                    <span className="label label-primary">10</span>
+                    <i className="glyphicon glyphicon-chevron-down" ></i>
+                </span>   
+                <div className="view">
+
+                       {this.link(<img src={require(`../../img/${this.props.data.img}` )} />)} 
+				</div>
+                    <div className="data">
+                        <p>{this.props.data.summary}</p>
+                        <span>
+                               {this.link("Continue reading >>>")} 
+                        </span>
+                    </div>
+                    <div className="clear"></div>
+                </div>
+
+
         );
     }
 };

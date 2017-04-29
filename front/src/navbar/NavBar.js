@@ -1,6 +1,5 @@
 
 import React from 'react';
-import "../../css/App.css";
 
 
 export default class NavBar extends React.Component {
@@ -10,8 +9,10 @@ export default class NavBar extends React.Component {
         return (
             <div>
             <nav>
-                <a href="#">Home</a>
-                <a href="#" className="selected">Blog</a>
+                <a href="#" className="selected">Home</a>
+                <a href="#" >Nowy Blog</a>
+                <a href="#" >Profil</a>
+
             </nav>
 
             <ul>
