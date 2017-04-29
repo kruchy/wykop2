@@ -1,18 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const models = require('../models/models');
+const User = require('../models/models').User;
 
-router.get('/', function (req, res, next) {
-    models.User.find({}, function (err, users) {
+router.get('/', async function (req, res, next) {
+    const users = await User.getUsers().catch(function (err) {
         if (err) {
-            res.status(500).json({error: "Problem getting users from server", reason: err});
+            console.log(err);
+            res.status(500).json({success: false, error: "Problem getting users from server", reason: err});
         }
-        else
-        {
-            res.status(200).json(users);
-        }
+    });
+    if (users) res.status(200).json({success: true, users: users});
 
-    })
 });
+
 
 module.exports = router;
