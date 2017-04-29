@@ -192,7 +192,7 @@ describe('Creating posts', function () {
             }
         });
         chai.request(server)
-            .post('/posts/createPost')
+            .post('/posts/')
             .send({
                 author:user,
                 content:'test',
@@ -222,7 +222,7 @@ describe('Creating posts', function () {
                 throw err;
         });
         chai.request(server)
-            .post('/posts/createPost')
+            .post('/posts/')
             .send({
                 author: user,
                 content : 'Test',

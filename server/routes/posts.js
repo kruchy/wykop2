@@ -33,7 +33,7 @@ router.get("/", function (req, res) {
 });
 
 
-router.post("/createPost", function (req, res) {
+router.post("/", function (req, res) {
     const author = req.body.author;
     const content = req.body.content;
     const post = new models.Post(
