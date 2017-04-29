@@ -11,6 +11,16 @@ chai.use(chaiHttp);
 
 process.env.NODE_ENV = 'test';
 
+function clearDatabase() {
+    let promises = [
+        User.remove().exec(),
+        Post.remove().exec()
+    ];
+
+    Promise.all(promises).then(function () {
+    });
+}
+
 describe('Login tests', function () {
     let server;
     beforeEach(function () {
@@ -82,16 +92,6 @@ describe('Login tests', function () {
             });
     });
 });
-
-function clearDatabase() {
-    let promises = [
-        User.remove().exec(),
-        Post.remove().exec()
-    ];
-
-    Promise.all(promises).then(function () {
-    });
-}
 describe('Getting posts', function () {
     let server;
     beforeEach(function (done) {
@@ -119,10 +119,7 @@ describe('Getting posts', function () {
                 done();
             })
         });
-
-
     });
-
 
     afterEach(function (done) {
         clearDatabase();
@@ -167,3 +164,73 @@ describe('Getting posts', function () {
             });
     });
 });
+
+describe('Creating posts', function () {
+    let server;
+    beforeEach(function () {
+        server = require('./app').server;
+        clearDatabase();
+    });
+    afterEach(function () {
+        clearDatabase();
+        server.close();
+
+    });
+    it('adds successfully new post ', function (done) {
+        let user = new User(
+            {
+                username: 'Bruce',
+                email: 'brucewayne@test.com',
+                password: 'test'
+            }
+        );
+        user.save(function (err) {
+            if (err) {
+                {
+                    throw err;
+                }
+            }
+        });
+        chai.request(server)
+            .post('/posts/createPost')
+            .send({
+                author:user,
+                content:'test',
+                token : require('./routes/login').createToken(user)
+            })
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property('success');
+                res.body.success.should.be.equal(true);
+                res.body.should.have.property('post');
+                res.body.post.content.should.be.equal('test');
+                res.body.should.have.property('author');
+                res.body.author.username.should.be.equal('Bruce');
+
+                done()
+            });
+    });
+    it('fails gracefully when token is incorrect', function (done) {
+        let user = new User({
+            username: 'Bruce',
+            password: 'test',
+            email: 'bruce@test.com'
+        });
+        user.save(function (err) {
+            if (err)
+                throw err;
+        });
+        chai.request(server)
+            .post('/posts/createPost')
+            .send({
+                author: user,
+                content : 'Test',
+                token: "abc"
+            })
+            .end(function (err, res) {
+                res.should.have.status(401);
+                done();
+            });
+    });
+})

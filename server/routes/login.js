@@ -28,6 +28,9 @@ function authenticate(username, password, callback) {
 }
 
 
+function createToken(user) {
+    return jwt.sign(user, config.secret, {expiresIn: 60 * 60 * 24});
+}
 router.post('/', basicAuth({authorizer: authenticate, authorizeAsync: true}), function (req, res) {
 
     User.findUser(req.auth.user, function (err, user) {
@@ -36,11 +39,10 @@ router.post('/', basicAuth({authorizer: authenticate, authorizeAsync: true}), fu
                     success: false,
                     error: "Error getting user from server", reason: error
                 });
-
             }
             else {
                 try {
-                    const token = jwt.sign(user, config.secret, {expiresIn: 60 * 60 * 24});
+                    const token = createToken(user);
                     res.status(200).json({
                         success: true,
                         token: token
@@ -59,3 +61,4 @@ router.post('/', basicAuth({authorizer: authenticate, authorizeAsync: true}), fu
 ;
 
 module.exports = router;
+module.exports.createToken = createToken;

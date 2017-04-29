@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+const jwt = require('jsonwebtoken');
 
 const userSchema = new Schema({
     email: {
@@ -22,6 +22,11 @@ userSchema.statics.getUsers = function (cb) {
 userSchema.statics.findUser = function (username,cb) {
     return this.findOne({username : username},cb);
 };
+userSchema.statics.getToken = function (user) {
+    return jwt.sign(user, config.secret, {expiresIn: 60 * 60 * 24});
+};
+
+
 
 userSchema.plugin(require('basic-auth-mongoose'));
 module.exports.userSchema = userSchema;
