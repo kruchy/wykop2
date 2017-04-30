@@ -1,6 +1,6 @@
-
+﻿
 import React from 'react';
-
+import { Link } from 'react-router';
 
 export default class NavBar extends React.Component {
     render() {
@@ -16,8 +16,12 @@ export default class NavBar extends React.Component {
             </nav>
 
             <ul>
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Sign up</a></li>
+                    <li><Link to={"signin"}>
+                        Login
+                    </Link></li>
+                    <li><Link to={"signup"}>
+                        Sign up
+                    </Link></li>
             </ul>
                 </div>
         );

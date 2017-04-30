@@ -9,7 +9,7 @@ export default class Content extends React.Component {
     render() {
         return (
 
-	<div className="main">
+	<div className="main-page">
                 <PostList />
                 <PopularPosts />
                 <Pager />
