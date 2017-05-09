@@ -10,6 +10,7 @@ const users = require('./routes/users');
 const login = require('./routes/login');
 const posts = require('./routes/posts');
 const register = require('./routes/register');
+const admin = require('./routes/admin');
 
 const monk = require('monk');
 const debug = require('debug')('untitled:server');
@@ -39,6 +40,7 @@ app.use('/user', users);
 app.use('/login', login);
 app.use('/posts', posts);
 app.use('/register', register);
+app.use('/admin', admin);
 
 app.use(function(req, res, next) {
   const err = new Error('Not Found');
