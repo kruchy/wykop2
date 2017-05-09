@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 const bodyParser = require('body-parser');
 
-var basicAuth = require('express-basic-auth');
+const basicAuth = require('express-basic-auth');
 
 // Create application/x-www-form-urlencoded parser
 const urlencodedParser = bodyParser.urlencoded({extended: false});

@@ -3,8 +3,6 @@ const chaiHttp = require('chai-http');
 const mongoose = require("mongoose");
 const Post = require('./models/models').Post;
 const User = require('./models/models').User;
-const sinon = require('sinon');
-const sinonmongoose = require('sinon-mongoose');
 
 const should = chai.should();
 chai.use(chaiHttp);
@@ -233,4 +231,4 @@ describe('Creating posts', function () {
                 done();
             });
     });
-})
+});

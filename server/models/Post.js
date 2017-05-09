@@ -5,9 +5,13 @@ const Schema = mongoose.Schema;
 const postSchema = new Schema({
     author: {
         type: Schema.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required : true
     },
-    content: String
+    content: {
+        type:String,
+        required:true
+    }
 });
 
 module.exports.postSchema = postSchema;
