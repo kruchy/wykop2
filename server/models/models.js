@@ -9,7 +9,7 @@ mongoose.connect(config.mongoURI[process.env.NODE_ENV || 'development'], functio
         console.log('Error connecting to the database. ' + err);
         process.exit(1);
     } else {
-        console.log('Connected to Database: ' + config.mongoURI[process.env.NODE_ENV]);
+        console.log('Connected to Database: ' + config.mongoURI[process.env.NODE_ENV || 'development']);
     }
 });
 

@@ -61,7 +61,6 @@ router.post("/", function (req, res) {
                             error: 'Could not save post',
                             reason: err
                         });
-
                     }
                     else {
                         res.status(200).json({
