@@ -54,7 +54,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-let port = normalizePort(process.env.PORT || '3000');
+let port = normalizePort(config.port || '8080');
 app.set('port', port);
 
 const server = http.createServer(app);

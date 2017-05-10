@@ -278,7 +278,7 @@ describe('Granting admin', function () {
         chai.request(server)
             .post('/admin/')
             .send({
-                user: 'Bruce',
+                username: 'Bruce',
                 token: require('../routes/login').createToken(admin)
             })
             .end(function (err, res) {
@@ -287,8 +287,10 @@ describe('Granting admin', function () {
                 res.body.should.have.property('success');
                 res.body.success.should.be.equal(true);
                 res.body.should.have.property('message');
-                res.body.message.should.have.property('ok');
-                res.body.message.ok.should.be.equal(1);
+                res.body.message.should.have.property('username');
+                res.body.message.username.should.be.equal('Bruce');
+                res.body.message.should.have.property('admin');
+                res.body.message.admin.should.be.equal(true);
 
 
                 done()
@@ -327,7 +329,7 @@ describe('Granting admin', function () {
         chai.request(server)
             .post('/admin/')
             .send({
-                user: 'Bruce',
+                username: 'Bruce',
                 token: require('../routes/login').createToken(admin)
             })
             .end(function (err, res) {
