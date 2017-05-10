@@ -1,8 +1,8 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require("mongoose");
-const Post = require('./models/models').Post;
-const User = require('./models/models').User;
+const Post = require('../models/models').Post;
+const User = require('../models/models').User;
 
 const should = chai.should();
 chai.use(chaiHttp);
@@ -22,7 +22,7 @@ function clearDatabase() {
 describe('Login tests', function () {
     let server;
     beforeEach(function () {
-        server = require('./app').server;
+        server = require('../app').server;
         clearDatabase();
     });
     afterEach(function () {
@@ -93,7 +93,7 @@ describe('Login tests', function () {
 describe('Getting posts', function () {
     let server;
     beforeEach(function (done) {
-        server = require('./app').server;
+        server = require('../app').server;
         clearDatabase();
         let user = new User(
             {
@@ -166,7 +166,7 @@ describe('Getting posts', function () {
 describe('Creating posts', function () {
     let server;
     beforeEach(function () {
-        server = require('./app').server;
+        server = require('../app').server;
         clearDatabase();
     });
     afterEach(function () {
@@ -194,7 +194,7 @@ describe('Creating posts', function () {
             .send({
                 author: user,
                 content: 'test',
-                token: require('./routes/login').createToken(user)
+                token: require('../routes/login').createToken(user)
             })
             .end(function (err, res) {
                 res.should.have.status(200);
@@ -236,7 +236,7 @@ describe('Creating posts', function () {
 describe('Granting admin', function () {
     let server;
     beforeEach(function () {
-        server = require('./app').server;
+        server = require('../app').server;
         clearDatabase();
     });
     afterEach(function () {
@@ -279,7 +279,7 @@ describe('Granting admin', function () {
             .post('/admin/')
             .send({
                 user: 'Bruce',
-                token: require('./routes/login').createToken(admin)
+                token: require('../routes/login').createToken(admin)
             })
             .end(function (err, res) {
                 res.should.have.status(200);
@@ -328,7 +328,7 @@ describe('Granting admin', function () {
             .post('/admin/')
             .send({
                 user: 'Bruce',
-                token: require('./routes/login').createToken(admin)
+                token: require('../routes/login').createToken(admin)
             })
             .end(function (err, res) {
                 res.should.have.status(403);
@@ -337,6 +337,5 @@ describe('Granting admin', function () {
                 res.body.success.should.be.equal(false);
                 done()
             });
-        ;
     });
 });
