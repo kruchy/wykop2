@@ -6,7 +6,6 @@ const Post = require('../models/models').Post;
 router.get('/', async function (req, res, next) {
     const users = await User.getUsers().catch(function (err) {
         if (err) {
-            console.log(err);
             res.status(500).json({success: false, error: "Problem getting users from server", reason: err});
         }
     });
@@ -20,22 +19,15 @@ router.get('/:username', async function (req, res, next) {
     }
     const user = await User.findUser(req.params.username).catch(function (err) {
         if (err) {
-            console.log(err);
             res.status(500).json({success: false, error: "Problem getting user from server", reason: err});
         }
     });
     if (user) {
         Post.find({author: user}).populate('author').exec(function (err, posts) {
             if (err) {
-                console.log('err ' + err);
-                console.log('user ' + user);
-
                 res.status(200).json({success: true, user: user, err: err});
             }
             else {
-                console.log('user ' + user);
-                console.log('posts ' + posts);
-
                 res.status(200).json({success: true, user: user, posts: posts});
             }
         });

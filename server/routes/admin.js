@@ -16,11 +16,6 @@ function errorResponse(res, code, error, reason) {
         });
 }
 function successResponse(res, message) {
-console.log(        {
-        success: true,
-        message: message
-    }
-);
     return res.status(200).json(
         {
             success: true,
@@ -28,41 +23,39 @@ console.log(        {
         }
     )
 }
-router.post("/", function (req, res) {
+function setAdminOnUser(req, res, enabled) {
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
-
     if (token) {
-        jwt.verify(token, config.secret, function (err, decoded) {
+        jwt.verify(token, config.secret, function (err, decoded, admin) {
             if (err) {
-                return errorResponse(res);
+                errorResponse(res);
             } else {
                 if (decoded._doc.admin) {
-                    const user = req.body.user;
-                    User.findUser(user, function (err, user) {
+                    const username = req.body.username;
+                    User.findOneAndUpdate({username: username}, {$set: {admin: enabled}}, {new: true}, function (err, user) {
                         if (err) {
-                            return errorResponse(res, 401, 'Could not find user in database', err);
+                            errorResponse(res, 500, 'Could not find user in database', err);
                         }
                         else {
-                            user.update({$set: {admin: true}}, function (err, raw) {
-                                if (err) {
-                                    return errorResponse(res, 500, 'Could not update user', err);
-                                }
-                                else {
-                                    return successResponse(res, raw);
-                                }
-                            })
+                            successResponse(res, {username: user.username, admin: user.admin});
                         }
-                    })
+                    });
                 }
                 else {
-                    return errorResponse(res, 403, 'Forbidden');
-
+                    errorResponse(res, 403, 'Forbidden');
                 }
             }
         });
     } else {
-        return errorResponse(res, 403, 'No token provided');
+        errorResponse(res, 403, 'No token provided');
     }
-
+}
+router.post("/", function (req, res) {
+    setAdminOnUser(req, res, true);
 });
+router.delete("/", function (req, res) {
+    setAdminOnUser(req, res, false);
+});
+
+
 module.exports = router;

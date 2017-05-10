@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 
 
 router.get("/:id", function (req, res) {
-    console.log(req.params.id);
     const query = models.Post.find({}, function (err, post) {
         if (err) {
             res.status(500)
@@ -44,10 +43,8 @@ router.post("/", function (req, res) {
     );
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
     if (token) {
-        console.log('after token');
         jwt.verify(token, config.secret, function (err, decoded) {
             if (err) {
-                console.log('err' + err);
                 return res.status(401).json(
                     {
                         success: false,
