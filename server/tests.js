@@ -192,9 +192,9 @@ describe('Creating posts', function () {
         chai.request(server)
             .post('/posts/')
             .send({
-                author:user,
-                content:'test',
-                token : require('./routes/login').createToken(user)
+                author: user,
+                content: 'test',
+                token: require('./routes/login').createToken(user)
             })
             .end(function (err, res) {
                 res.should.have.status(200);
@@ -223,12 +223,120 @@ describe('Creating posts', function () {
             .post('/posts/')
             .send({
                 author: user,
-                content : 'Test',
+                content: 'Test',
                 token: "abc"
             })
             .end(function (err, res) {
                 res.should.have.status(401);
                 done();
             });
+    });
+});
+
+describe('Granting admin', function () {
+    let server;
+    beforeEach(function () {
+        server = require('./app').server;
+        clearDatabase();
+    });
+    afterEach(function () {
+        clearDatabase();
+        server.close();
+
+    });
+    it('grants user admin privileges', function (done) {
+
+        let admin = new User(
+            {
+                username: 'Admin',
+                email: 'admin@admin.com',
+                password: 'admin',
+                admin: true
+            }
+        );
+
+        admin.save(function (err) {
+            if (err) {
+                throw err;
+            }
+        });
+
+        let user = new User(
+            {
+                username: 'Bruce',
+                email: 'brucewayne@test.com',
+                password: 'test'
+            }
+        );
+        user.save(function (err) {
+            if (err) {
+                {
+                    throw err;
+                }
+            }
+        });
+        chai.request(server)
+            .post('/admin/')
+            .send({
+                user: 'Bruce',
+                token: require('./routes/login').createToken(admin)
+            })
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property('success');
+                res.body.success.should.be.equal(true);
+                res.body.should.have.property('message');
+                res.body.message.should.have.property('ok');
+                res.body.message.ok.should.be.equal(1);
+
+
+                done()
+            });
+    });
+    it('fails to grant privileges when user is not admin', function (done) {
+        let admin = new User(
+            {
+                username: 'Admin',
+                email: 'admin@admin.com',
+                password: 'admin',
+                admin: false
+            }
+        );
+
+        admin.save(function (err) {
+            if (err) {
+                throw err;
+            }
+        });
+
+        let user = new User(
+            {
+                username: 'Bruce',
+                email: 'brucewayne@test.com',
+                password: 'test'
+            }
+        );
+        user.save(function (err) {
+            if (err) {
+                {
+                    throw err;
+                }
+            }
+        });
+        chai.request(server)
+            .post('/admin/')
+            .send({
+                user: 'Bruce',
+                token: require('./routes/login').createToken(admin)
+            })
+            .end(function (err, res) {
+                res.should.have.status(403);
+                res.should.be.json;
+                res.body.should.have.property('success');
+                res.body.success.should.be.equal(false);
+                done()
+            });
+        ;
     });
 });
