@@ -46,4 +46,7 @@ register new standard user
 
     POST(username,token)
     
-Elevate user to admin
+Grant admin to user
+    DELETE(username,token)
+
+Revoke admin from user

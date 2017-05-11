@@ -282,7 +282,7 @@ describe('Granting admin', function () {
                 done()
             });
     });
-    it('fails to grant privileges when user is not admin', function (done) {
+    it('fails to grant admin when requester is not an admin', function (done) {
         let admin = new User(
             {
                 username: 'Admin',
@@ -326,7 +326,7 @@ describe('Granting admin', function () {
                 done()
             });
     });
-    it('grants user admin privileges', function (done) {
+    it('revokes admin from user', function (done) {
 
         let admin = new User(
             {
@@ -365,7 +365,7 @@ describe('Granting admin', function () {
                 done()
             });
     });
-    it('fails to take privileges from user when requester is not an admin', function (done) {
+    it('fails to revoke admin from user when requester is not an admin', function (done) {
         let admin = new User(
             {
                 username: 'Admin',
