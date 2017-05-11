@@ -32,6 +32,11 @@ function setAdminOnUser(req, res, enabled) {
             } else {
                 if (decoded._doc.admin) {
                     const username = req.body.username;
+                    if(!req.body.username)
+                    {
+                        errorResponse(res, 400, 'Username not provided', null);
+                        return;
+                    }
                     User.findOneAndUpdate({username: username}, {$set: {admin: enabled}}, {new: true}, function (err, user) {
                         if (err) {
                             errorResponse(res, 500, 'Could not find user in database', err);

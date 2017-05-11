@@ -33,14 +33,13 @@ router.get("/", function (req, res) {
 
 
 router.post("/", function (req, res) {
-    const author = req.body.author;
     const content = req.body.content;
-    const post = new models.Post(
-        {
-            author: author._id,
-            content: content
-        }
-    );
+    if (!content) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid content provided.'
+        })
+    }
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
     if (token) {
         jwt.verify(token, config.secret, function (err, decoded) {
@@ -51,6 +50,12 @@ router.post("/", function (req, res) {
                         message: 'Failed to authenticate token.'
                     });
             } else {
+                const post = new models.Post(
+                    {
+                        author: decoded._doc._id,
+                        content: content
+                    }
+                );
                 post.save(function (err) {
                     if (err) {
                         res.status(500).json({
@@ -63,7 +68,7 @@ router.post("/", function (req, res) {
                         res.status(200).json({
                             success: true,
                             post: post,
-                            author: author,
+                            author: decoded._doc,
                         });
                     }
                 });
