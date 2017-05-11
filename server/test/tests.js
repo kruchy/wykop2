@@ -3,39 +3,16 @@ const chaiHttp = require('chai-http');
 const mongoose = require("mongoose");
 const Post = require('../src/models/models').Post;
 const User = require('../src/models/models').User;
+const utils = require('./testUtils');
+
+const clearDatabase = utils.clearDatabase;
+const createAndSaveUser = utils.createAndSaveUser;
 
 const should = chai.should();
 chai.use(chaiHttp);
 
 process.env.NODE_ENV = 'test';
 
-function createAndSaveUser() {
-    let user = new User(
-        {
-            username: 'Bruce',
-            email: 'brucewayne@test.com',
-            password: 'test'
-        }
-    );
-    user.save(function (err) {
-        if (err) {
-            {
-                throw err;
-            }
-        }
-    });
-    return user;
-}
-
-function clearDatabase() {
-    let promises = [
-        User.remove().exec(),
-        Post.remove().exec()
-    ];
-
-    Promise.all(promises).then(function () {
-    });
-}
 describe('Login tests', function () {
     let server;
     beforeEach(function () {
@@ -412,7 +389,7 @@ describe('Granting admin', function () {
 });
 
 
-describe('Registration tests',function () {
+describe('Registration tests', function () {
     let server;
     beforeEach(function () {
         server = require('../app').server;
@@ -428,8 +405,8 @@ describe('Registration tests',function () {
             .post('/register/')
             .send({
                 username: 'Bruce',
-                password:'test',
-                email:'test@test.com'
+                password: 'test',
+                email: 'test@test.com'
             })
             .end(function (err, res) {
                 res.should.have.status(200);
@@ -445,7 +422,7 @@ describe('Registration tests',function () {
             .send({
                 username: 'Bruce',
                 password: null,
-                email:'test@test.com'
+                email: 'test@test.com'
             })
             .end(function (err, res) {
                 res.should.have.status(400);
