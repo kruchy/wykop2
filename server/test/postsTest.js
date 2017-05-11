@@ -5,7 +5,6 @@ const utils = require('./testUtils');
 const clearDatabase = utils.clearDatabase;
 const createAndSaveUser = utils.createAndSaveUser;
 const createUserWithPost = utils.createUserWithPost;
-const createAdmin = utils.createAdmin;
 
 chai.use(chaiHttp);
 process.env.NODE_ENV = 'test';
@@ -109,4 +108,4 @@ describe('Creating posts', function () {
                 done();
             });
     });
-})
+});

@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 
 router.get("/:id", function (req, res) {
-    const query = models.Post.find({}, function (err, post) {
+    models.Post.find({}, function (err, post) {
         if (err) {
             res.status(500)
                 .json({error: "Problem retrieving post from server", reason: err});

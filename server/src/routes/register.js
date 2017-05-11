@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-var User = require("../models/models.js").User;
+const User = require("../models/models.js").User;
 
 /* GET home page. */
-router.post('/', function (req, res, next) {
+router.post('/', function (req, res) {
     const userName = req.body.username;
     const userEmail = req.body.email;
     const userPasword = req.body.password;

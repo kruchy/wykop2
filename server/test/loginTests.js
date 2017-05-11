@@ -4,8 +4,7 @@ const mongoose = require("mongoose");
 const utils = require('./testUtils');
 const clearDatabase = utils.clearDatabase;
 const createAndSaveUser = utils.createAndSaveUser;
-const createUserWithPost = utils.createUserWithPost;
-const createAdmin = utils.createAdmin;
+
 chai.use(chaiHttp);
 process.env.NODE_ENV = 'test';
 
@@ -21,7 +20,7 @@ describe('Login tests', function () {
 
     });
     it('returns 200 and valid token when correct credentials used', function (done) {
-        let user = createAndSaveUser();
+        createAndSaveUser();
         chai.request(server)
             .post('/login')
             .auth('Bruce', 'test')

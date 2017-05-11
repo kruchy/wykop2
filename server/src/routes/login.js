@@ -7,8 +7,6 @@ const bodyParser = require('body-parser');
 
 const basicAuth = require('express-basic-auth');
 
-// Create application/x-www-form-urlencoded parser
-const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 function authenticate(username, password, callback) {
     if (!username || !password) {
@@ -37,7 +35,7 @@ router.post('/', basicAuth({authorizer: authenticate, authorizeAsync: true}), fu
             if (err) {
                 res.status(500).json({
                     success: false,
-                    error: "Error getting user from server", reason: error
+                    error: "Error getting user from server", reason: err
                 });
             }
             else {

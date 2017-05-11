@@ -16,7 +16,7 @@ mongoose.connect(config.mongoURI[process.env.NODE_ENV || 'development'], functio
 const db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "Connection error:"));
-db.once("open", function (callback) {
+db.once("open", function () {
     console.log("Connection Succeeded.");
 });
 

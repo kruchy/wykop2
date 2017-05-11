@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const utils = require('./testUtils');
 const clearDatabase = utils.clearDatabase;
 const createAndSaveUser = utils.createAndSaveUser;
-const createUserWithPost = utils.createUserWithPost;
+
 const createAdmin = utils.createAdmin;
 
 chai.use(chaiHttp);
@@ -24,7 +24,7 @@ describe('Granting admin', function () {
     it('grants user admin privileges', function (done) {
 
         let admin = createAdmin(true);
-        let user = createAndSaveUser();
+        createAndSaveUser();
         chai.request(server)
             .put('/admin/')
             .send({
@@ -50,7 +50,7 @@ describe('Granting admin', function () {
         let admin = createAdmin(false);
 
 
-        let user = createAndSaveUser();
+        createAndSaveUser();
         chai.request(server)
             .put('/admin/')
             .send({
@@ -93,7 +93,7 @@ describe('Granting admin', function () {
     });
     it('fails to revoke admin from user when requester is not an admin', function (done) {
         let admin = createAdmin(false);
-        let user = createAndSaveUser();
+        createAndSaveUser();
         chai.request(server)
             .delete('/admin/')
             .send({

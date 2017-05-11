@@ -1,6 +1,4 @@
 const chai = require('chai');
-const mongoose = require("mongoose");
-const Post = require('../src/models/models').Post;
 const User = require('../src/models/models').User;
 const expect = require('chai').expect;
 
