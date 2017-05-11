@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/models').User;
 const jwt = require('jsonwebtoken');
-const config = require('../config');
+const config = require('../../config');
 const bodyParser = require('body-parser');
 
 const basicAuth = require('express-basic-auth');

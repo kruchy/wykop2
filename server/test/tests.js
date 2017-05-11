@@ -1,13 +1,31 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require("mongoose");
-const Post = require('../models/models').Post;
-const User = require('../models/models').User;
+const Post = require('../src/models/models').Post;
+const User = require('../src/models/models').User;
 
 const should = chai.should();
 chai.use(chaiHttp);
 
 process.env.NODE_ENV = 'test';
+
+function createAndSaveUser() {
+    let user = new User(
+        {
+            username: 'Bruce',
+            email: 'brucewayne@test.com',
+            password: 'test'
+        }
+    );
+    user.save(function (err) {
+        if (err) {
+            {
+                throw err;
+            }
+        }
+    });
+    return user;
+}
 
 function clearDatabase() {
     let promises = [
@@ -18,7 +36,6 @@ function clearDatabase() {
     Promise.all(promises).then(function () {
     });
 }
-
 describe('Login tests', function () {
     let server;
     beforeEach(function () {
@@ -31,20 +48,7 @@ describe('Login tests', function () {
 
     });
     it('returns 200 and valid token when correct credentials used', function (done) {
-        let user = new User(
-            {
-                username: 'Bruce',
-                email: 'brucewayne@test.com',
-                password: 'test'
-            }
-        );
-        user.save(function (err) {
-            if (err) {
-                {
-                    throw err;
-                }
-            }
-        });
+        let user = createAndSaveUser();
         chai.request(server)
             .post('/login')
             .auth('Bruce', 'test')
@@ -58,20 +62,7 @@ describe('Login tests', function () {
             });
     });
     it('returns unauthorized when invalid credentials used', function (done) {
-        let user = new User(
-            {
-                username: 'Bruce',
-                email: 'brucewayne@test.com',
-                password: 'test'
-            }
-        );
-        user.save(function (err) {
-            if (err) {
-                {
-                    throw err;
-                }
-            }
-        });
+        createAndSaveUser();
         chai.request(server)
             .post('/login')
             .auth('Bruce', 'other')
@@ -90,33 +81,37 @@ describe('Login tests', function () {
             });
     });
 });
+
+function createUserWithPost(done) {
+    let user = new User(
+        {
+            username: "Bruce",
+            email: "brucewayne@test.com",
+            password: 'test',
+            admin: false
+        }
+    );
+    user.save(function (err) {
+        if (err)
+            throw err;
+        new Post(
+            {
+                author: user._id,
+                content: 'Test'
+            }
+        ).save(function (err) {
+            if (err)
+                throw err;
+            done();
+        })
+    });
+}
 describe('Getting posts', function () {
     let server;
     beforeEach(function (done) {
         server = require('../app').server;
         clearDatabase();
-        let user = new User(
-            {
-                username: "Bruce",
-                email: "brucewayne@test.com",
-                password: 'test',
-                admin: false
-            }
-        );
-        user.save(function (err) {
-            if (err)
-                throw err;
-            new Post(
-                {
-                    author: user._id,
-                    content: 'Test'
-                }
-            ).save(function (err) {
-                if (err)
-                    throw err;
-                done();
-            })
-        });
+        createUserWithPost(done);
     });
 
     afterEach(function (done) {
@@ -194,7 +189,7 @@ describe('Creating posts', function () {
             .send({
                 author: user,
                 content: 'test',
-                token: require('../routes/login').createToken(user)
+                token: require('../src/routes/login').createToken(user)
             })
             .end(function (err, res) {
                 res.should.have.status(200);
@@ -210,15 +205,7 @@ describe('Creating posts', function () {
             });
     });
     it('fails gracefully when token is incorrect', function (done) {
-        let user = new User({
-            username: 'Bruce',
-            password: 'test',
-            email: 'bruce@test.com'
-        });
-        user.save(function (err) {
-            if (err)
-                throw err;
-        });
+        let user = createAndSaveUser();
         chai.request(server)
             .post('/posts/')
             .send({
@@ -232,7 +219,6 @@ describe('Creating posts', function () {
             });
     });
 });
-
 describe('Granting admin', function () {
     let server;
     beforeEach(function () {
@@ -276,10 +262,10 @@ describe('Granting admin', function () {
             }
         });
         chai.request(server)
-            .post('/admin/')
+            .put('/admin/')
             .send({
                 username: 'Bruce',
-                token: require('../routes/login').createToken(admin)
+                token: require('../src/routes/login').createToken(admin)
             })
             .end(function (err, res) {
                 res.should.have.status(200);
@@ -327,10 +313,93 @@ describe('Granting admin', function () {
             }
         });
         chai.request(server)
-            .post('/admin/')
+            .put('/admin/')
             .send({
                 username: 'Bruce',
-                token: require('../routes/login').createToken(admin)
+                token: require('../src/routes/login').createToken(admin)
+            })
+            .end(function (err, res) {
+                res.should.have.status(403);
+                res.should.be.json;
+                res.body.should.have.property('success');
+                res.body.success.should.be.equal(false);
+                done()
+            });
+    });
+    it('grants user admin privileges', function (done) {
+
+        let admin = new User(
+            {
+                username: 'Admin',
+                email: 'admin@admin.com',
+                password: 'admin',
+                admin: true
+            }
+        );
+
+        admin.save(function (err) {
+            if (err) {
+                throw err;
+            }
+        });
+
+        createAndSaveUser();
+        chai.request(server)
+            .delete('/admin/')
+            .send({
+                username: 'Bruce',
+                token: require('../src/routes/login').createToken(admin)
+            })
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property('success');
+                res.body.success.should.be.equal(true);
+                res.body.should.have.property('message');
+                res.body.message.should.have.property('username');
+                res.body.message.username.should.be.equal('Bruce');
+                res.body.message.should.have.property('admin');
+                res.body.message.admin.should.be.equal(false);
+
+
+                done()
+            });
+    });
+    it('fails to take privileges from user when requester is not an admin', function (done) {
+        let admin = new User(
+            {
+                username: 'Admin',
+                email: 'admin@admin.com',
+                password: 'admin',
+                admin: false
+            }
+        );
+
+        admin.save(function (err) {
+            if (err) {
+                throw err;
+            }
+        });
+
+        let user = new User(
+            {
+                username: 'Bruce',
+                email: 'brucewayne@test.com',
+                password: 'test'
+            }
+        );
+        user.save(function (err) {
+            if (err) {
+                {
+                    throw err;
+                }
+            }
+        });
+        chai.request(server)
+            .delete('/admin/')
+            .send({
+                username: 'Bruce',
+                token: require('../src/routes/login').createToken(admin)
             })
             .end(function (err, res) {
                 res.should.have.status(403);

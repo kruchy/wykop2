@@ -1,6 +1,6 @@
 const express = require('express');
 const models = require('../models/models');
-const config = require("../config.js");
+const config = require("../../config.js");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 

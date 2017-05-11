@@ -5,12 +5,12 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const index = require('./routes/index');
-const users = require('./routes/users');
-const login = require('./routes/login');
-const posts = require('./routes/posts');
-const register = require('./routes/register');
-const admin = require('./routes/admin');
+const index = require('./src/routes/index');
+const users = require('./src/routes/users');
+const login = require('./src/routes/login');
+const posts = require('./src/routes/posts');
+const register = require('./src/routes/register');
+const admin = require('./src/routes/admin');
 
 const monk = require('monk');
 const debug = require('debug')('untitled:server');

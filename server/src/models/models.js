@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Users = require("./User");
 const Posts = require("./Post");
 
-const config = require('../config');
+const config = require('../../config');
 mongoose.Promise = global.Promise;
 mongoose.connect(config.mongoURI[process.env.NODE_ENV || 'development'], function (err, res) {
     if (err) {

@@ -1,6 +1,6 @@
 const express = require('express');
 const models = require('../models/models');
-const config = require("../config.js");
+const config = require("../../config.js");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/models').User;
@@ -50,7 +50,7 @@ function setAdminOnUser(req, res, enabled) {
         errorResponse(res, 403, 'No token provided');
     }
 }
-router.post("/", function (req, res) {
+router.put("/", function (req, res) {
     setAdminOnUser(req, res, true);
 });
 router.delete("/", function (req, res) {

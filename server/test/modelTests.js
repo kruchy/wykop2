@@ -1,7 +1,7 @@
 const chai = require('chai');
 const mongoose = require("mongoose");
-const Post = require('../models/models').Post;
-const User = require('../models/models').User;
+const Post = require('../src/models/models').Post;
+const User = require('../src/models/models').User;
 const expect = require('chai').expect;
 
 const should = chai.should();
