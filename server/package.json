@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "start": "node ./app",
-    "test": "mocha -R spec test\\tests.js test\\modelTests.js"
+    "test": "mocha -R spec test\\*"
   },
   "dependencies": {
     "basic-auth-mongoose": "^0.1.1",
