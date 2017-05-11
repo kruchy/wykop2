@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { Link } from 'react-router';
 
+
 export default class SignUp extends React.Component {
 
     constructor(props, context) {
@@ -9,12 +10,12 @@ export default class SignUp extends React.Component {
         this.state = {
             errors: {},
             user: {
-                email: '',
-                name: '',
-                password: ''
+                username: '',
+                password: '',
+                email: ''
+
             }
         };
-
         this.processForm = this.processForm.bind(this);
         this.changeUser = this.changeUser.bind(this);
     }
@@ -22,11 +23,10 @@ export default class SignUp extends React.Component {
 
     processForm(event) {
         event.preventDefault();
-        console.log('register');
-        const name = encodeURIComponent(this.state.user.name);
+        const username = encodeURIComponent(this.state.user.username);
         const email = encodeURIComponent(this.state.user.email);
         const password = encodeURIComponent(this.state.user.password);
-        const formData = `name=${name}&email=${email}&password=${password}`;
+        const formData = `username=${username}&password=${password}&email=${email}`;
 
         const request = new XMLHttpRequest();
         request.open('post', '/register');
@@ -40,7 +40,6 @@ export default class SignUp extends React.Component {
                 });
 
                 localStorage.setItem('successMessage', request.response.message);
-
                 this.context.router.replace('/signin');
             } else {
 
@@ -78,13 +77,13 @@ export default class SignUp extends React.Component {
                         </div>
                     </div>
                     <div className="main-login main-center">
-                        <form className="form-horizontal" method="post" action="/" onSubmit={this.onSubmit} >
+                        <form className="form-horizontal" method="post" action="/register" onSubmit={this.onSubmit} >
                             <div className="form-group">
                                 <label htmlFor="username" className="cols-sm-2 control-label">Użytkownik</label>
                                 <div className="cols-sm-10">
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-user fa" aria-hidden="true"></i></span>
-                                        <input type="text" className="form-control" name="name" id="name" placeholder="Wpisz nazwę użytkownika" onChange={this.changeUser} value={this.state.user.name} />
+                                        <input type="text" className="form-control" name="username" id="username" placeholder="Wpisz nazwę użytkownika" onChange={this.changeUser} value={this.state.user.username} />
                                     </div>
                                 </div>
                             </div>
@@ -123,4 +122,8 @@ export default class SignUp extends React.Component {
 
         );
     }
+};
+
+SignUp.contextTypes = {
+    router: React.PropTypes.object.isRequired
 };
