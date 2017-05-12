@@ -1,6 +1,6 @@
-﻿import React from 'react';
+﻿import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-
+import $ from 'jquery'
 
 export default class SignUp extends React.Component {
 
@@ -20,38 +20,31 @@ export default class SignUp extends React.Component {
         this.changeUser = this.changeUser.bind(this);
     }
 
+    static contextTypes = {
+        router: PropTypes.object.isRequired
+    };
 
     processForm(event) {
         event.preventDefault();
+        console.log("here!");
         const username = encodeURIComponent(this.state.user.username);
         const email = encodeURIComponent(this.state.user.email);
         const password = encodeURIComponent(this.state.user.password);
         const formData = `username=${username}&password=${password}&email=${email}`;
 
-        const request = new XMLHttpRequest();
-        request.open('post', '/register');
-        request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        request.responseType = 'json';
-        request.addEventListener('load', () => {
-            if (request.status === 200) {
+        $.ajax({
+            url: "/register",
+            type: "post",
+            data: formData,
+            success: function (response) {
 
-                this.setState({
-                    errors: {}
-                });
+                localStorage.setItem('successMessage', response.message);
+                this.context.router.replace('/signin')
 
-                localStorage.setItem('successMessage', request.response.message);
-                this.context.router.replace('/signin');
-            } else {
+            }.bind(this)
 
-                const errors = request.response.errors ? request.response.errors : {};
-                errors.summary = request.response.message;
-
-                this.setState({
-                    errors
-                });
-            }
         });
-        request.send(formData);
+
     }
 
     changeUser(event) {
@@ -77,7 +70,7 @@ export default class SignUp extends React.Component {
                         </div>
                     </div>
                     <div className="main-login main-center">
-                        <form className="form-horizontal" method="post" action="/register" onSubmit={this.onSubmit} >
+                        <form className="form-horizontal" method="post" action="/register" onSubmit={this.processForm} >
                             <div className="form-group">
                                 <label htmlFor="username" className="cols-sm-2 control-label">Użytkownik</label>
                                 <div className="cols-sm-10">
@@ -124,6 +117,3 @@ export default class SignUp extends React.Component {
     }
 };
 
-SignUp.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
