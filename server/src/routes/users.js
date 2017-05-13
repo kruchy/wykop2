@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/models').User;
 const Post = require('../models/models').Post;
 
-router.get('/', async function (req, res, next) {
+router.get('/', function (req, res, next) {
     User.getUsers(function (err, users) {
         if (err) {
             res.status(500).json({success: false, error: "Problem getting users from server", reason: err});
