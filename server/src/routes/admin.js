@@ -38,7 +38,7 @@ function setAdminOnUser(req, res, enabled) {
                         return;
                     }
                     User.findOneAndUpdate({username: username}, {$set: {admin: enabled}}, {new: true}, function (err, user) {
-                        if (err) {
+                        if (err || !user) {
                             errorResponse(res, 500, 'Could not find user in database', err);
                         }
                         else {
