@@ -26,7 +26,6 @@ export default class SignUp extends React.Component {
 
     processForm(event) {
         event.preventDefault();
-        console.log("here!");
         const username = encodeURIComponent(this.state.user.username);
         const email = encodeURIComponent(this.state.user.email);
         const password = encodeURIComponent(this.state.user.password);
@@ -51,7 +50,6 @@ export default class SignUp extends React.Component {
         const field = event.target.name;
         const user = this.state.user;
         user[field] = event.target.value;
-        console.log(user);
         this.setState({
             user
         });
