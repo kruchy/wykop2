@@ -7,7 +7,7 @@
 /coverage
 
 # production
-/build
+/**/build
 
 # misc
 .DS_Store
@@ -38,7 +38,7 @@ yarn-error.log*
 x64/
 x86/
 bld/
-[Bb]in/
+#[Bb]in/
 [Oo]bj/
 [Ll]og/
 

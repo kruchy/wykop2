@@ -16,7 +16,10 @@
   ],
   "scripts": {
     "start": "node ./app",
-    "test": "mocha -R spec test/*"
+    "test": "mocha -R spec test/*",
+    "build-front": "npm install --prefix ../front && npm run build --prefix ../front",
+    "distro-script": "rimraf ./build && node distro",
+    "dist": "npm run build-front && npm install && npm run distro-script"
   },
   "dependencies": {
     "basic-auth-mongoose": "^0.1.1",
@@ -43,5 +46,11 @@
     "sinon": "^2.1.0",
     "sinon-mongoose": "^2.0.0",
     "swagger-node-express": "~2.0"
+  },
+  "devDependencies": {
+    "cpx": "^1.5.0",
+    "debug": "^2.6.6",
+    "innosetup-compiler": "^5.5.9",
+    "rimraf": "^2.6.1"
   }
 }
