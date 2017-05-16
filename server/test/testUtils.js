@@ -33,7 +33,8 @@ function createPostForUser(user) {
     let post = new Post(
         {
             author: user._id,
-            content: 'Test'
+            content: 'Test',
+            title: 'Title'
         }
     );
     post.save(function (err) {

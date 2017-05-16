@@ -93,7 +93,8 @@ router.delete("/", function (req, res) {
 
 router.post("/", function (req, res) {
     const content = req.body.content;
-    if (!content) {
+    const title = req.body.title;
+    if (!content || !title) {
         return res.status(400).json({
             success: false,
             message: 'Invalid content provided.'
@@ -112,7 +113,8 @@ router.post("/", function (req, res) {
                 const post = new models.Post(
                     {
                         author: decoded._doc._id,
-                        content: content
+                        content: content,
+                        title: title
                     }
                 );
                 post.save(function (err) {

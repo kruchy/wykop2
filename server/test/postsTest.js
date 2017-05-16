@@ -42,9 +42,11 @@ describe('Getting posts', function () {
                 res.body.post.should.have.property('_id');
                 res.body.post.should.have.property('author');
                 res.body.post.should.have.property('content');
+                res.body.post.should.have.property('title');
                 res.body.post.author.should.have.property('username');
                 res.body.post.author.username.should.equal('Bruce');
                 res.body.post.content.should.equal('Test');
+                res.body.post.title.should.equal('Title');
                 done();
             });
     });
@@ -60,9 +62,11 @@ describe('Getting posts', function () {
                 res.body.posts[0].should.have.property('_id');
                 res.body.posts[0].should.have.property('author');
                 res.body.posts[0].should.have.property('content');
+                res.body.posts[0].should.have.property('title');
                 res.body.posts[0].author.should.have.property('username');
                 res.body.posts[0].author.username.should.equal('Bruce');
                 res.body.posts[0].content.should.equal('Test');
+                res.body.posts[0].title.should.equal('Title');
                 done();
             });
     });
@@ -104,6 +108,7 @@ describe('Creating posts', function () {
             .send({
                 author: user,
                 content: 'test',
+                title: 'title',
                 token: require('../src/routes/login').createToken(user)
             })
             .end(function (err, res) {
@@ -112,7 +117,10 @@ describe('Creating posts', function () {
                 res.body.should.have.property('success');
                 res.body.success.should.be.equal(true);
                 res.body.should.have.property('post');
+                res.body.post.should.have.property('title');
+                res.body.post.should.have.property('content');
                 res.body.post.content.should.be.equal('test');
+                res.body.post.title.should.be.equal('title');
                 res.body.should.have.property('author');
                 res.body.author.username.should.be.equal('Bruce');
 
@@ -126,6 +134,7 @@ describe('Creating posts', function () {
             .send({
                 author: user,
                 content: 'Test',
+                title: 'title',
                 token: "abc"
             })
             .end(function (err, res) {
