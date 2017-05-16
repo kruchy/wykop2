@@ -26,7 +26,7 @@ export default class SignIn extends React.Component {
         };
 
         this.processForm = this.processForm.bind(this);
-        this.changeUser = this.changeUser.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     static contextTypes = {
@@ -70,7 +70,7 @@ export default class SignIn extends React.Component {
 
     }
 
-    changeUser(event) {
+    handleChange(event) {
         const field = event.target.name;
         const user = this.state.user;
         user[field] = event.target.value;
@@ -97,7 +97,7 @@ export default class SignIn extends React.Component {
                                 <div className="cols-sm-10">
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-user fa" aria-hidden="true"></i></span>
-                                        <input type="text" className="form-control" name="username" id="username" onChange={this.changeUser} value={this.state.user.username} placeholder="Wpisz nazwę użytkownika" />
+                                        <input type="text" className="form-control" name="username" id="username" onChange={this.handleChange} value={this.state.user.username} placeholder="Wpisz nazwę użytkownika" />
                                     </div>
                                 </div>
                             </div>
@@ -107,7 +107,7 @@ export default class SignIn extends React.Component {
                                 <div className="cols-sm-10">
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                        <input type="password" className="form-control" name="password" id="password" onChange={this.changeUser} value={this.state.user.password} placeholder="Wpisz hasło" />
+                                        <input type="password" className="form-control" name="password" id="password" onChange={this.handleChange} value={this.state.user.password} placeholder="Wpisz hasło" />
                                     </div>
                                 </div>
                             </div>
