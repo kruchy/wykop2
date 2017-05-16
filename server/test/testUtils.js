@@ -29,7 +29,7 @@ function clearDatabase() {
     });
 }
 
-function createUserWithPost(user) {
+function createPostForUser(user) {
     let post = new Post(
         {
             author: user._id,
@@ -73,4 +73,4 @@ function createAdmin(enabled) {
 module.exports.clearDatabase = clearDatabase;
 module.exports.createAdmin = createAdmin;
 module.exports.createAndSaveUser = createAndSaveUser;
-module.exports.createUserWithPost = createUserWithPost;
+module.exports.createPostForUser = createPostForUser;

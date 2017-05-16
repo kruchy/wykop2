@@ -5,18 +5,40 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 
-router.get("/:id", function (req, res) {
-    models.Post.find({}, function (err, post) {
-        if (err) {
-            res.status(500)
-                .json({error: "Problem retrieving post from server", reason: err});
-        }
-        else {
-            res.status(200)
-                .json(found);
-        }
-    });
+router.get("/", function (req, res) {
+    let id = req.query.id;
+    if (id) {
+        console.log(id);
+        models.Post.findOne({_id: id}).populate('author').exec(function (err, post) {
+            if (err) {
+                res.status(500)
+                    .json({success: false, error: "Problem retrieving post from server", reason: err});
+            }
+            else {
+                console.log(post);
+                res.status(200)
+                    .json({
+                        success: true,
+                        post: post
+                    });
+            }
+        });
+    }
+    else {
+        models.Post.find({}).populate('author').exec(function (err, posts) {
+            if (err) {
+                res.status(500)
+                    .json({success: false, error: "Problem retrieving post from server", reason: err});
+            }
+            else {
+                res.status(200)
+                    .json({success: true, posts: posts});
+            }
+        });
+    }
 });
+
+
 router.delete("/", function (req, res) {
     const id = req.body.id;
     if (!id) {
@@ -66,19 +88,6 @@ router.delete("/", function (req, res) {
 
     }
 
-});
-
-router.get("/", function (req, res) {
-    models.Post.find({}).populate('author').exec(function (err, posts) {
-        if (err) {
-            res.status(500)
-                .json({success: false, error: "Problem retrieving post from server", reason: err});
-        }
-        else {
-            res.status(200)
-                .json({success: true, posts: posts});
-        }
-    });
 });
 
 

@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const utils = require('./testUtils');
 const clearDatabase = utils.clearDatabase;
 const createAndSaveUser = utils.createAndSaveUser;
-const createUserWithPost = utils.createUserWithPost;
+const createPostForUser = utils.createPostForUser;
 const createAdmin = utils.createAdmin;
 
 
@@ -13,10 +13,13 @@ process.env.NODE_ENV = 'test';
 
 describe('Getting posts', function () {
     let server;
+    let user;
+    let post;
     beforeEach(function (done) {
         server = require('../app').server;
         clearDatabase();
-        createUserWithPost(createAndSaveUser());
+        user = createAndSaveUser();
+        post = createPostForUser(user);
         done();
     });
 
@@ -26,6 +29,25 @@ describe('Getting posts', function () {
         done();
     });
 
+    it('Should get one saved post GET', function (done) {
+        chai.request(server)
+            .get('/posts')
+            .query({id: post.id})
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property('success');
+                res.body.success.should.be.equal(true);
+                res.body.should.have.property('post');
+                res.body.post.should.have.property('_id');
+                res.body.post.should.have.property('author');
+                res.body.post.should.have.property('content');
+                res.body.post.author.should.have.property('username');
+                res.body.post.author.username.should.equal('Bruce');
+                res.body.post.content.should.equal('Test');
+                done();
+            });
+    });
     it('Should get all posts GET', function (done) {
         chai.request(server)
             .get('/posts')
@@ -125,7 +147,7 @@ describe('Delete posts', function () {
     });
     it('removes successfully new post ', function (done) {
         let admin = createAdmin(true);
-        let post = createUserWithPost(createAndSaveUser());
+        let post = createPostForUser(createAndSaveUser());
         chai.request(server)
             .delete('/posts/')
             .send({
@@ -142,7 +164,7 @@ describe('Delete posts', function () {
     });
     it('forbids to remove post by regular user ', function (done) {
         let user = createAndSaveUser();
-        let post = createUserWithPost(user);
+        let post = createPostForUser(user);
         chai.request(server)
             .delete('/posts/')
             .send({
