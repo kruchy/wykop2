@@ -8,14 +8,12 @@ const jwt = require('jsonwebtoken');
 router.get("/", function (req, res) {
     let id = req.query.id;
     if (id) {
-        console.log(id);
         models.Post.findOne({_id: id}).populate('author').exec(function (err, post) {
             if (err) {
                 res.status(500)
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
             }
             else {
-                console.log(post);
                 res.status(200)
                     .json({
                         success: true,

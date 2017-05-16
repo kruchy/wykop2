@@ -43,7 +43,8 @@ router.post('/', basicAuth({authorizer: authenticate, authorizeAsync: true}), fu
                     const token = createToken(user);
                     res.status(200).json({
                         success: true,
-                        token: token
+                        token: token,
+                        user: user
                     })
                 } catch (error) {
                     res.status(500).json({
