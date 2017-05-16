@@ -5,6 +5,8 @@ const utils = require('./testUtils');
 const clearDatabase = utils.clearDatabase;
 const createAndSaveUser = utils.createAndSaveUser;
 const createUserWithPost = utils.createUserWithPost;
+const createAdmin = utils.createAdmin;
+
 
 chai.use(chaiHttp);
 process.env.NODE_ENV = 'test';
@@ -14,7 +16,8 @@ describe('Getting posts', function () {
     beforeEach(function (done) {
         server = require('../app').server;
         clearDatabase();
-        createUserWithPost(done);
+        createUserWithPost(createAndSaveUser());
+        done();
     });
 
     afterEach(function (done) {
@@ -108,4 +111,51 @@ describe('Creating posts', function () {
                 done();
             });
     });
+});
+
+describe('Delete posts', function () {
+    let server;
+    beforeEach(function () {
+        server = require('../app').server;
+        clearDatabase();
+    });
+    afterEach(function () {
+        clearDatabase();
+        server.close();
+    });
+    it('removes successfully new post ', function (done) {
+        let admin = createAdmin(true);
+        let post = createUserWithPost(createAndSaveUser());
+        chai.request(server)
+            .delete('/posts/')
+            .send({
+                id: post._id,
+                token: require('../src/routes/login').createToken(admin)
+            })
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property('success');
+                res.body.success.should.be.equal(true);
+                done()
+            });
+    });
+    it('forbids to remove post by regular user ', function (done) {
+        let user = createAndSaveUser();
+        let post = createUserWithPost(user);
+        chai.request(server)
+            .delete('/posts/')
+            .send({
+                id: post._id,
+                token: require('../src/routes/login').createToken(user)
+            })
+            .end(function (err, res) {
+                res.should.have.status(403);
+                res.should.be.json;
+                res.body.should.have.property('success');
+                res.body.success.should.be.equal(false);
+                done()
+            });
+    });
+
 });

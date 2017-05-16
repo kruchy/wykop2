@@ -29,29 +29,25 @@ function clearDatabase() {
     });
 }
 
-function createUserWithPost(done) {
-    let user = new User(
+function createUserWithPost(user) {
+    let post = new Post(
         {
-            username: "Bruce",
-            email: "brucewayne@test.com",
-            password: 'test',
-            admin: false
+            author: user._id,
+            content: 'Test'
         }
     );
-    user.save(function (err) {
-        if (err)
+    post.save(function (err) {
+        if (err) {
             throw err;
-        new Post(
-            {
-                author: user._id,
-                content: 'Test'
-            }
-        ).save(function (err) {
-            if (err)
-                throw err;
-            done();
-        })
+        }
+        else {
+            post.populate('author', function (err, populatedPost) {
+                if (err)
+                    throw err;
+            });
+        }
     });
+    return post;
 }
 
 function createAdmin(enabled) {
@@ -61,7 +57,7 @@ function createAdmin(enabled) {
             username: 'admin',
             email: 'admin@test.com',
             password: 'admin',
-            admin:enabled
+            admin: enabled
         }
     );
     user.save(function (err) {
