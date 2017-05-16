@@ -106,7 +106,6 @@ describe('Creating posts', function () {
         chai.request(server)
             .post('/posts/')
             .send({
-                author: user,
                 content: 'test',
                 title: 'title',
                 token: require('../src/routes/login').createToken(user)
@@ -132,7 +131,6 @@ describe('Creating posts', function () {
         chai.request(server)
             .post('/posts/')
             .send({
-                author: user,
                 content: 'Test',
                 title: 'title',
                 token: "abc"
