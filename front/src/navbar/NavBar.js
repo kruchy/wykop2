@@ -11,7 +11,7 @@ export default class NavBar extends React.Component {
                 {Auth.isUserAuthenticated() ? (
                     <nav>
                         <Link to={"/"} className="selected">Home</Link>
-                        <a href="#" >Nowy Blog</a>
+                        <Link to={"/add_post"}>Nowy post</Link>
                         <a href="#" >Profil</a>
                     </nav>
 
