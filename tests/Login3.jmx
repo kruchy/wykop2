@@ -22,11 +22,36 @@
             <stringProp name="Argument.value">http</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="user" elementType="Argument">
+            <stringProp name="Argument.name">user</stringProp>
+            <stringProp name="Argument.value">empty</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </elementProp>
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
+      <MongoSourceElement guiclass="TestBeanGUI" testclass="MongoSourceElement" testname="MongoDB Source Config" enabled="true">
+        <stringProp name="connection">127.0.0.1</stringProp>
+        <stringProp name="source">wykop2</stringProp>
+        <boolProp name="autoConnectRetry">false</boolProp>
+        <intProp name="connectionsPerHost">50</intProp>
+        <intProp name="connectTimeout">0</intProp>
+        <longProp name="maxAutoConnectRetryTime">0</longProp>
+        <intProp name="maxWaitTime">120000</intProp>
+        <intProp name="socketTimeout">0</intProp>
+        <boolProp name="socketKeepAlive">false</boolProp>
+        <intProp name="threadsAllowedToBlockForConnectionMultiplier">5</intProp>
+        <boolProp name="safe">false</boolProp>
+        <boolProp name="fsync">false</boolProp>
+        <boolProp name="waitForJournaling">false</boolProp>
+        <intProp name="writeOperationNumberOfServers">0</intProp>
+        <intProp name="writeOperationTimeout">0</intProp>
+        <boolProp name="continueOnInsertError">false</boolProp>
+        <stringProp name="TestPlan.comments">Configures connection to MongoDB</stringProp>
+      </MongoSourceElement>
+      <hashTree/>
       <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager" enabled="true">
         <collectionProp name="AuthManager.auth_list"/>
       </AuthManager>
@@ -48,7 +73,7 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">300</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <longProp name="ThreadGroup.start_time">1363247040000</longProp>
         <longProp name="ThreadGroup.end_time">1363247040000</longProp>
@@ -57,6 +82,74 @@
         <stringProp name="ThreadGroup.delay">0</stringProp>
       </ThreadGroup>
       <hashTree>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Check If User Exists" enabled="true">
+          <stringProp name="cacheKey"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="script">import com.mongodb.DB;
+import org.apache.jmeter.protocol.mongodb.config.MongoDBHolder;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.DBCollection;
+
+DB db = MongoDBHolder.getDBFromSource(&quot;wykop2&quot;, &quot;wykop2&quot;);
+DBCollection coll = db.getCollection(&quot;users&quot;);
+
+BasicDBObject query = new BasicDBObject(&quot;username&quot;, &quot;seba&quot;); // create DBObject holding the query
+DBObject result = coll.findOne(query); // find the document
+
+//coll.remove({}); //delete the document
+
+SampleResult.setResponseData(&quot;&quot;+result,&quot;UTF-8&quot;);</stringProp>
+          <stringProp name="scriptLanguage">groovy</stringProp>
+        </JSR223Sampler>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1657723133">username:seba, email:seba@gmail.com,</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>true</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>true</code>
+                <message>true</message>
+                <threadName>true</threadName>
+                <dataType>true</dataType>
+                <encoding>false</encoding>
+                <assertions>true</assertions>
+                <subresults>true</subresults>
+                <responseData>false</responseData>
+                <samplerData>false</samplerData>
+                <xml>false</xml>
+                <fieldNames>true</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>false</responseDataOnError>
+                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <bytes>true</bytes>
+                <sentBytes>true</sentBytes>
+                <threadCounts>true</threadCounts>
+                <idleTime>true</idleTime>
+                <connectTime>true</connectTime>
+              </value>
+            </objProp>
+            <stringProp name="filename"></stringProp>
+          </ResultCollector>
+          <hashTree/>
+        </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Visit Home Page" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
             <collectionProp name="Arguments.arguments"/>
@@ -286,6 +379,25 @@
             <stringProp name="filename"></stringProp>
           </ResultCollector>
           <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+            <stringProp name="cacheKey"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">import com.mongodb.DB;
+import org.apache.jmeter.protocol.mongodb.config.MongoDBHolder;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.DBCollection;
+
+DB db = MongoDBHolder.getDBFromSource(&quot;wykop2&quot;, &quot;wykop2&quot;);
+DBCollection coll = db.getCollection(&quot;users&quot;);
+//
+//int size = coll.count();
+coll.remove({})
+//SampleResult.setResponseData(&quot;&quot;+coll.count(),&quot;UTF-8&quot;);</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
         </hashTree>
         <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
@@ -323,21 +435,41 @@
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration" enabled="true">
-          <stringProp name="dataSource"></stringProp>
-          <stringProp name="poolMax">10</stringProp>
-          <stringProp name="timeout">10000</stringProp>
-          <stringProp name="trimInterval">60000</stringProp>
-          <boolProp name="autocommit">true</boolProp>
-          <stringProp name="transactionIsolation">DEFAULT</stringProp>
-          <boolProp name="keepAlive">true</boolProp>
-          <stringProp name="connectionAge">5000</stringProp>
-          <stringProp name="checkQuery">Select 1</stringProp>
-          <stringProp name="dbUrl"></stringProp>
-          <stringProp name="driver"></stringProp>
-          <stringProp name="username"></stringProp>
-          <stringProp name="password"></stringProp>
-        </JDBCDataSource>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
         <hashTree/>
       </hashTree>
     </hashTree>
