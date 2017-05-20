@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 
 router.get("/:id", function (req, res) {
-    models.Post.find({}, function (err, post) {
+    models.Post.find({}).populate('author').populate('comments').exec(function (err, post) {
         if (err) {
             res.status(500)
                 .json({error: "Problem retrieving post from server", reason: err});
