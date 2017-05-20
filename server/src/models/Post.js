@@ -9,13 +9,10 @@ const postSchema = new Schema({
         required: true
     },
     content: {
-        type:String,
-        required:true
-    },
-    title: {
         type: String,
         required: true
-    }
+    },
+    title: {
         type: String,
         required: true
     },
