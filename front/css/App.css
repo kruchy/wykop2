@@ -22,14 +22,16 @@ html body {
 
 .postContent {
     width: 1000px;
-    margin: 0 auto;
-    float: right
+    margin: 90px auto;
 }
 
 .postList {
     margin-top: 50px;
 }
 
+.push-left {
+    margin-right: 30px;
+}
 
 /* header */
 
