@@ -30,6 +30,8 @@ describe('Login tests', function () {
                 res.body.should.have.property('success');
                 res.body.success.should.be.equal(true);
                 res.body.should.have.property('token');
+                res.body.should.have.property('user');
+                res.body.user.username.should.be.equal('Bruce');
                 done()
             });
     });
