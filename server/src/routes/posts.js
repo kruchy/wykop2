@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 router.get("/", function (req, res) {
     let id = req.query.id;
     if (id) {
-        models.Post.findOne({_id: id}).populate('author').exec(function (err, post) {
+        models.Post.findOne({_id: id}).populate('author').populate('comments').exec(function (err, post) {
             if (err) {
                 res.status(500)
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
@@ -23,7 +23,7 @@ router.get("/", function (req, res) {
         });
     }
     else {
-        models.Post.find({}).populate('author').exec(function (err, posts) {
+        models.Post.find({}).populate('author').populate('comments').exec(function (err, posts) {
             if (err) {
                 res.status(500)
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
