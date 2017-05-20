@@ -16,4 +16,11 @@ const commentSchema = new Schema({
 
 });
 
+commentSchema.virtual("posts", {
+    ref: "Post",
+    localField: "_id",
+    foreignField: "comments"
+});
+
+
 module.exports.commentSchema = commentSchema;

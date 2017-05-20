@@ -17,7 +17,7 @@ const postSchema = new Schema({
         required: true
     },
     comments: [{
-        type: Schema.ObjectId,
+        type: Schema.Types.Mixed,
         ref: 'Comment'
     }]
 
