@@ -34,10 +34,13 @@ export default class PostItem extends React.Component {
                 </span>  
                 {this.props.data.img ?
                     <div className="view">
-
                         {this.link(<img alt="post_image" src={require(`../../img/${this.props.data.img}`)} />)}
                     </div>
-                     : null}
+                    : 
+                    <div className="view">
+                        <img alt="post_image" src={require(`../../img/default.jpg`)} />
+                    </div>
+                    }
                     <div className="data">
                         <p>{this.props.data.content}</p>
                         <span>
