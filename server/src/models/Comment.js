@@ -1,18 +1,23 @@
 const mongoose = require("mongoose");
 const User = require('./models').User;
+const Post = require('./models').Post;
 const Schema = mongoose.Schema;
+
 
 const commentSchema = new Schema({
     author: {
         type: Schema.ObjectId,
         ref: 'User',
-        required : true
+        required: true
     },
     content: {
-        type:String,
-        required:true
+        type: String,
+        required: true
+    },
+    post: {
+        type: Schema.ObjectId,
+        ref: 'User'
     }
-
 
 });
 

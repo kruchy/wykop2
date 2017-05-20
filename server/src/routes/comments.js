@@ -24,8 +24,10 @@ router.delete("/", function (req, res) {
                         message: 'Failed to authenticate token.'
                     });
             } else {
-                models.Comment.findOne({id: req.body.id}, function (err, comment) {
+                models.Comment.findOne({_id: commentId}).populate('author').exec(function (err, comment) {
                     if (err || !comment) {
+                        console.log("eerr");
+
                         res.status(500)
                             .json({success: false, error: "Problem retrieving comment from server", reason: err});
                     }
@@ -37,24 +39,29 @@ router.delete("/", function (req, res) {
                             });
                     }
                     else {
-                        comment.remove(function (err) {
-                            if (err) {
-                                res.status(500)
-                                    .json({
-                                        success: false,
-                                        message: 'Problem removing comment.',
-                                        reason: err
-                                    });
-                            } else {
-                                res.status(200)
-                                    .json({
-                                        success: true,
-                                        message: 'Deleted comment.'
-                                    })
+                        models.Post.update({post: comment.post}, {$pull: {comments: {_id: commentId}}}, {
+                                "new": true,
+                                "upsert": true
+                            },
+                            function (err, updatedPost) {
+                                comment.remove(function (err) {
+                                    if (err) {
+                                        res.status(500)
+                                            .json({
+                                                success: false,
+                                                message: 'Problem removing comment.',
+                                                reason: err
+                                            });
+                                    } else {
+                                        res.status(200)
+                                            .json({
+                                                success: true,
+                                                message: 'Deleted comment.'
+                                            })
+                                    }
+                                })
 
-                            }
-                        });
-
+                            });
                     }
                 })
             }
@@ -92,7 +99,8 @@ router.post("/", function (req, res) {
                     const comment = new models.Comment(
                         {
                             content: content,
-                            author: decoded._doc
+                            author: decoded._doc,
+                            post: postId
                         }
                     );
 
