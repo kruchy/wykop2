@@ -15,8 +15,7 @@ export default class PostItem extends React.Component {
      return   <Link to={`/post/${this.props.data.id}`}>
                {props}
         </Link>
-}
-
+    }
 
     render() {
         //const thisDate = new Date(this.props.date);
@@ -26,19 +25,21 @@ export default class PostItem extends React.Component {
                     {this.link(this.props.data.title)}
                 </h3> 
 
-                <span>By {this.props.data.author} < span className="comments">8 Comments</span></span>
+                <span>By {this.props.data.author.username} < span className="comments">8 Comments</span></span>
 
                 <span className="vote">
                     <i className="glyphicon glyphicon-chevron-up" ></i>
                     <span className="label label-primary">10</span>
                     <i className="glyphicon glyphicon-chevron-down" ></i>
-                </span>   
-                <div className="view">
+                </span>  
+                {this.props.data.img ?
+                    <div className="view">
 
-                    {this.link(<img alt="post_image" src={require(`../../img/${this.props.data.img}` )} />)} 
-				</div>
+                        {this.link(<img alt="post_image" src={require(`../../img/${this.props.data.img}`)} />)}
+                    </div>
+                     : null}
                     <div className="data">
-                        <p>{this.props.data.summary}</p>
+                        <p>{this.props.data.content}</p>
                         <span>
                                {this.link("Continue reading >>>")} 
                         </span>
