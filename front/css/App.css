@@ -22,16 +22,15 @@ html body {
 
 .postContent {
     width: 1000px;
-    margin: 90px auto;
+    margin: 0 auto;
+    float: right
 }
 
 .postList {
     margin-top: 50px;
 }
 
-.push-left{
-    margin-right: 30px;
-}
+
 /* header */
 
 .header-login-signup {

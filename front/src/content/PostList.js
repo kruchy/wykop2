@@ -115,7 +115,7 @@ export default class PostList extends React.Component {
     render() {
         const posts = this.state.data.map(function (post) {
             return (
-                <PostItem key={post.id} data={post} />
+                    <PostItem data={post}/>
              );
         });
 

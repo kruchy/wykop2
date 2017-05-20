@@ -1,4 +1,5 @@
 import React from "react";
+import NavBar from './navbar/NavBar.js';
 import Header from './header/Header.js';
 
 

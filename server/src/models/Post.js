@@ -6,16 +6,21 @@ const postSchema = new Schema({
     author: {
         type: Schema.ObjectId,
         ref: 'User',
-        required : true
+        required: true
     },
     content: {
-        type:String,
-        required:true
+        type: String,
+        required: true
     },
     title: {
         type: String,
         required: true
-    }
+    },
+    comments: [{
+        type: Schema.ObjectId,
+        ref: 'Comment'
+    }]
+
 });
 
 module.exports.postSchema = postSchema;

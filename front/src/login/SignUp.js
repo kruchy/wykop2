@@ -17,7 +17,7 @@ export default class SignUp extends React.Component {
             }
         };
         this.processForm = this.processForm.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.changeUser = this.changeUser.bind(this);
     }
 
     static contextTypes = {
@@ -26,6 +26,7 @@ export default class SignUp extends React.Component {
 
     processForm(event) {
         event.preventDefault();
+        console.log("here!");
         const username = encodeURIComponent(this.state.user.username);
         const email = encodeURIComponent(this.state.user.email);
         const password = encodeURIComponent(this.state.user.password);
@@ -46,10 +47,11 @@ export default class SignUp extends React.Component {
 
     }
 
-    handleChange(event) {
+    changeUser(event) {
         const field = event.target.name;
         const user = this.state.user;
         user[field] = event.target.value;
+        console.log(user);
         this.setState({
             user
         });
@@ -74,7 +76,7 @@ export default class SignUp extends React.Component {
                                 <div className="cols-sm-10">
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-user fa" aria-hidden="true"></i></span>
-                                        <input type="text" className="form-control" name="username" id="username" placeholder="Wpisz nazwę użytkownika" onChange={this.handleChange} value={this.state.user.username} />
+                                        <input type="text" className="form-control" name="username" id="username" placeholder="Wpisz nazwę użytkownika" onChange={this.changeUser} value={this.state.user.username} />
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +85,7 @@ export default class SignUp extends React.Component {
                                 <div className="cols-sm-10">
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-envelope fa" aria-hidden="true"></i></span>
-                                        <input type="text" className="form-control" name="email" id="email" placeholder="Wpisz adres email" onChange={this.handleChange} value={this.state.user.email} />
+                                        <input type="text" className="form-control" name="email" id="email" placeholder="Wpisz adres email" onChange={this.changeUser} value={this.state.user.email} />
                                     </div>
                                 </div>
                             </div>
@@ -92,7 +94,7 @@ export default class SignUp extends React.Component {
                                 <div className="cols-sm-10">
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                        <input type="password" className="form-control" name="password" id="password" placeholder="Wpisz hasło" onChange={this.handleChange} value={this.state.user.password} />
+                                        <input type="password" className="form-control" name="password" id="password" placeholder="Wpisz hasło" onChange={this.changeUser} value={this.state.user.password} />
                                     </div>
                                 </div>
                             </div>

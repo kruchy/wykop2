@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Users = require("./User");
 const Posts = require("./Post");
+const Comments = require("./Comment");
 
 const config = require('../../config');
 mongoose.Promise = global.Promise;
@@ -21,5 +22,5 @@ db.once("open", function () {
 });
 
 module.exports.Post = mongoose.model("Post", Posts.postSchema);
-
+module.exports.Comment = mongoose.model("Comment", Comments.commentSchema);
 module.exports.User = mongoose.model("User", Users.userSchema);

@@ -19,7 +19,7 @@ export default class PostItem extends React.Component {
 
 
     render() {
-      //  const thisDate = new Date(this.props.date);
+        const thisDate = new Date(this.props.date);
         return (
             <div className="box1">
                 <h3>
@@ -35,7 +35,7 @@ export default class PostItem extends React.Component {
                 </span>   
                 <div className="view">
 
-                       {this.link(<img alt="post_image" src={require(`../../img/${this.props.data.img}` )} />)} 
+                       {this.link(<img src={require(`../../img/${this.props.data.img}` )} />)} 
 				</div>
                     <div className="data">
                         <p>{this.props.data.summary}</p>
