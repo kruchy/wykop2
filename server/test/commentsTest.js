@@ -61,12 +61,12 @@ describe('Delete comment', function () {
     it('removes successfully comment ', function (done) {
         let user = createAndSaveUser();
         let comment = createCommentForUser(user);
-        let post = createPostForUser(user,[comment]);
+        let post = createPostForUser(user, [comment]);
         chai.request(server)
             .delete('/comment/')
             .send({
                 commentId: comment._id,
-                token : require('../src/routes/login').createToken(user)
+                token: require('../src/routes/login').createToken(user)
             })
             .end(function (err, res) {
                 res.should.have.status(200);
@@ -76,14 +76,15 @@ describe('Delete comment', function () {
                 done()
             });
     });
-    it('forbids to remove post by regular user ', function (done) {
+    it('forbids to remove comment by not author', function (done) {
         let user = createAndSaveUser();
-        let post = createPostForUser(user);
+        let admin = createAdmin(false);
+        let comment = createCommentForUser(user);
         chai.request(server)
-            .delete('/posts/')
+            .delete('/comment/')
             .send({
-                id: post._id,
-                token: require('../src/routes/login').createToken(user)
+                commentId: comment._id,
+                token: require('../src/routes/login').createToken(admin)
             })
             .end(function (err, res) {
                 res.should.have.status(403);
