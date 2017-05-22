@@ -88,8 +88,13 @@ router.delete("/", function (req, res) {
 
 });
 
-
-router.post("/", function (req, res) {
+const multer = require('multer');
+const uploading = multer({
+    limits: {fileSize: 1000000, files: 1},
+});
+router.use(uploading.single('image'));
+router.use(require('body-parser').urlencoded({extended : false}));
+router.post("/",function (req, res) {
     const content = req.body.content;
     const title = req.body.title;
     if (!content || !title) {
@@ -108,11 +113,17 @@ router.post("/", function (req, res) {
                         message: 'Failed to authenticate token.'
                     });
             } else {
+                let file = null;
+                if(req.file)
+                {
+                    file = new Buffer(req.file.buffer).toString('base64');
+                }
                 const post = new models.Post(
                     {
                         author: decoded._doc._id,
                         content: content,
-                        title: title
+                        title: title,
+                        image:file
                     }
                 );
                 post.save(function (err) {
