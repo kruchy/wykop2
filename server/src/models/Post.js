@@ -16,10 +16,14 @@ const postSchema = new Schema({
         type: String,
         required: true
     },
+    image: {
+        type: String
+    },
     comments: [{
         type: Schema.ObjectId,
         ref: 'Comment'
     }]
+
 
 });
 
