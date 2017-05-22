@@ -3,9 +3,10 @@ const models = require('../models/models');
 const config = require("../../config.js");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-
+const sanitizeHtml = require('sanitize-html');
 
 router.get("/", function (req, res) {
+
     let id = req.query.id;
     if (id) {
         models.Post.findOne({_id: id}).populate('author').populate('comments').exec(function (err, post) {
@@ -90,8 +91,8 @@ router.delete("/", function (req, res) {
 
 
 router.post("/", function (req, res) {
-    const content = req.body.content;
-    const title = req.body.title;
+    const content = sanitizeHtml(req.body.content);
+    const title = sanitizeHtml(req.body.title);
     if (!content || !title) {
         return res.status(400).json({
             success: false,

@@ -3,6 +3,7 @@ const models = require('../models/models');
 const config = require("../../config.js");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const sanitizeHtml = require('sanitize-html');
 
 
 router.delete("/", function (req, res) {
@@ -78,7 +79,7 @@ router.delete("/", function (req, res) {
 
 
 router.post("/", function (req, res) {
-    const content = req.body.content;
+    const content = sanitizeHtml(req.body.content);
     const postId = req.body.postId;
     if (!content || !postId) {
         return res.status(400).json({
