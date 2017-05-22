@@ -11,21 +11,32 @@ export default class NewPost extends React.Component {
             post: {
                 title: '',
                 content: ''
-            }
+            },
+            img: ''
+
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleImgChange = this.handleImgChange.bind(this);
+
+
+
     }
 
     static contextTypes = {
         router: PropTypes.object.isRequired
     };
 
+
     handleSubmit(event) {
         event.preventDefault();
         const title = encodeURIComponent(this.state.post.title);
         const content = encodeURIComponent(this.state.post.content);
-        const formData = `title=${title}&content=${content}&token=${Auth.getToken()}`;
+        const img = encodeURIComponent(this.state.img);
+
+        console.log(img);
+
+        const formData = `title=${title}&content=${content}&img=${img}&token=${Auth.getToken()}`;
 
         $.ajax({
             url: "/posts",
@@ -51,6 +62,20 @@ export default class NewPost extends React.Component {
         });
     }
 
+
+    handleImgChange(event) {
+        let reader = new FileReader();
+        const img = event.target.files[0];
+        reader.onloadend = () => {
+        this.setState({
+            img: reader.result
+        });
+    }
+
+    reader.readAsDataURL(img)
+
+    }
+
     render() {
         return (   
             <div className="container">
@@ -66,8 +91,14 @@ export default class NewPost extends React.Component {
                                         <div className="col-md-10">
                                         <input id="title" name="title" type="text" placeholder="Wprowadź nazwę tematu" className="form-control" onChange={this.handleChange} value={this.state.post.title}/>
                                                 </div>
-                                            </div>
+                                </div>
 
+                                    <div className="form-group">
+                                        <label className="col-md-2 control-label" htmlFor="img">Obrazek</label>
+                                        <div className="col-md-10">
+                                        <input id="img" name="img" type="file" className="form-control" onChange={this.handleImgChange} />
+                                        </div>
+                                    </div>
 
                                     <div className="form-group">
                                         <label className="col-md-2 control-label" htmlFor="content">Treść</label>
