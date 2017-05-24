@@ -7,13 +7,14 @@ export default class PostItem extends React.Component {
         super(props);
         this.id = "";
         this.state = {
-            id: this.props.id
+            id: this.props.data._id
         };
     }
 
+
     link(props) {
-     return   <Link to={`/post/${this.props.data.id}`}>
-               {props}
+     return   <Link to={`/post/${this.state.id}`}>
+         {props}
         </Link>
     }
 
@@ -24,7 +25,6 @@ export default class PostItem extends React.Component {
                 <h3>
                     {this.link(this.props.data.title)}
                 </h3> 
-
                 <span>By {this.props.data.author.username} < span className="comments">8 Comments</span></span>
 
                 <span className="vote">
