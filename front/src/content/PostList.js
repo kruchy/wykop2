@@ -90,7 +90,7 @@ export default class PostList extends React.Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         $.ajax({
             url: "/posts",
             type: "get",
@@ -98,8 +98,6 @@ export default class PostList extends React.Component {
                 format: 'json'
             },
             success: function (response) {
-                console.log(response["posts"]);
-    //            console.log(mockData["data"]);
                 this.setState({ data: response["posts"] });
             }.bind(this),
 
@@ -110,9 +108,6 @@ export default class PostList extends React.Component {
         });
     }
 
-    componentDidMount() {
-   //     this.setState({ data: mockData["data"] });
-    }
 
     render() {
         const posts = this.state.data.map(function (post) {
