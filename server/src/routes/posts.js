@@ -3,7 +3,7 @@ const models = require('../models/models');
 const config = require("../../config.js");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-
+const sanitizeHtml = require('sanitize-html');
 
 router.get("/", function (req, res) {
     let id = req.query.id;
@@ -14,6 +14,7 @@ router.get("/", function (req, res) {
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
             }
             else {
+                console.log(post);
                 res.status(200)
                     .json({
                         success: true,
@@ -88,12 +89,6 @@ router.delete("/", function (req, res) {
 
 });
 
-const multer = require('multer');
-const uploading = multer({
-    limits: {fileSize: 1000000, files: 1},
-});
-router.use(uploading.single('image'));
-router.use(require('body-parser').urlencoded({extended : false}));
 router.post("/", function (req, res) {
     const content = sanitizeHtml(req.body.content);
     const title = sanitizeHtml(req.body.title);
@@ -113,17 +108,12 @@ router.post("/", function (req, res) {
                         message: 'Failed to authenticate token.'
                     });
             } else {
-                let file = null;
-                if(req.file)
-                {
-                    file = new Buffer(req.file.buffer).toString('base64');
-                }
                 const post = new models.Post(
                     {
                         author: decoded._doc._id,
                         content: content,
                         title: title,
-                        image:file
+                        image:req.body.image
                     }
                 );
                 post.save(function (err) {
