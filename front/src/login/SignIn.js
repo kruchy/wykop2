@@ -5,79 +5,79 @@ import Auth from './Auth'
 
 export default class SignIn extends React.Component {
 
-    constructor(props, context) {
-        super(props, context);
-
-        const storedMessage = localStorage.getItem('successMessage');
-        let successMessage = '';
-
-        if (storedMessage) {
-            successMessage = storedMessage;
-            localStorage.removeItem('successMessage');
-        }
-
-        this.state = {
-            errors: {},
-            successMessage,
-            user: {
-                username: '',
-                password: ''
+        constructor(props, context) {
+                super(props, context);
+        
+                const storedMessage = localStorage.getItem('successMessage');
+                let successMessage = '';
+        
+                    if (storedMessage) {
+                            successMessage = storedMessage;
+                            localStorage.removeItem('successMessage');
+                        }
+        
+                    this.state = {
+                        errors: { },
+                        successMessage,
+                            user: {
+                                username: '',
+                                password: ''
+                                    }
+                    };
+        
+                this.processForm = this.processForm.bind(this);
+                this.handleChange = this.handleChange.bind(this);
             }
+ 
+        static contextTypes = {
+         router: PropTypes.object.isRequired
         };
 
-        this.processForm = this.processForm.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    static contextTypes = {
-        router: PropTypes.object.isRequired
-    };
-
-    processForm(event) {
-        event.preventDefault();
-
-        const username = encodeURIComponent(this.state.user.username);
-        const password = encodeURIComponent(this.state.user.password);
-        const formData = `username=${username}&password=${password}`;
-
-        $.ajax({
-            url: "/login",
-            type: "post",
-            data: formData,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
-            },
-            success: function (response) {
-                this.setState({
-                    errors: {}
-                });
-
-                Auth.authenticateUser(response.token);
-                this.context.router.replace('/');
-
-            }.bind(this),
-
-            error: function (response) {
-                const errors = response.errors ? response.errors : {};
-                errors.summary = response.message;
-
-                this.setState({
-                    errors
-                });
+        processForm(event) {
+            event.preventDefault();
+    
+            const username = encodeURIComponent(this.state.user.username);
+            const password = encodeURIComponent(this.state.user.password);
+            const formData = `username=${username}&password=${password}`;
+    
+                $.ajax({
+                        url: "/login",
+                        type: "post",
+                        data: formData,
+                        beforeSend: function (xhr) {
+                                xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
+                            },
+                        success: function (response) {
+                            this.setState({
+                                 errors: {}
+                            });
+    
+                            Auth.authenticateUser(response.token);
+                            this.context.router.replace('/');
+    
+                    }.bind(this),
+            
+                       error: function (response) {
+                             const errors = response.errors ? response.errors : {};
+                             errors.summary = response.message;
+                
+                             this.setState({
+                                  errors
+                             });
             }.bind(this)
+    
+            });
 
-        });
+        }
 
-    }
-
-    handleChange(event) {
-        const field = event.target.name;
-        const user = this.state.user;
-        user[field] = event.target.value;
-
-        this.setState({
-            user
-        });
+        handleChange(event) {
+            const field = event.target.name;
+            const user = this.state.user;
+            user[field] = event.target.value;
+    
+                this.setState({
+                    user
+                });
     }
     render() {
         return (

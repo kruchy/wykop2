@@ -7,38 +7,42 @@ export default class PostItem extends React.Component {
         super(props);
         this.id = "";
         this.state = {
-            id: this.props.id
+            id: this.props.data._id
         };
     }
 
-    link(props) {
-     return   <Link to={`/post/${this.props.data.id}`}>
-               {props}
-        </Link>
-}
 
+    link(props) {
+     return   <Link to={`/post/${this.state.id}`}>
+         {props}
+        </Link>
+    }
 
     render() {
-      //  const thisDate = new Date(this.props.date);
+        //const thisDate = new Date(this.props.date);
         return (
             <div className="box1">
                 <h3>
                     {this.link(this.props.data.title)}
                 </h3> 
-
-                <span>By {this.props.data.author} < span className="comments">8 Comments</span></span>
+                <span>By {this.props.data.author.username} < span className="comments">8 Comments</span></span>
 
                 <span className="vote">
                     <i className="glyphicon glyphicon-chevron-up" ></i>
                     <span className="label label-primary">10</span>
                     <i className="glyphicon glyphicon-chevron-down" ></i>
-                </span>   
-                <div className="view">
-
-                       {this.link(<img alt="post_image" src={require(`../../img/${this.props.data.img}` )} />)} 
-				</div>
+                </span>  
+                {this.props.data.img ?
+                    <div className="view">
+                        {this.link(<img alt="post_image" src={require(`../../img/${this.props.data.img}`)} />)}
+                    </div>
+                    : 
+                    <div className="view">
+                        <img alt="post_image" src={require(`../../img/default.jpg`)} />
+                    </div>
+                    }
                     <div className="data">
-                        <p>{this.props.data.summary}</p>
+                        <p>{this.props.data.content}</p>
                         <span>
                                {this.link("Continue reading >>>")} 
                         </span>

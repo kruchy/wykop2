@@ -50,3 +50,13 @@ Grant admin to user
     DELETE(username,token)
 
 Revoke admin from user
+
+### /comment
+
+    POST(content,postId,token)
+
+Add coment to post
+
+    DELETE(commentId,token)
+
+Remove comment

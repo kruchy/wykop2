@@ -3,17 +3,18 @@ const models = require('../models/models');
 const config = require("../../config.js");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-
+const sanitizeHtml = require('sanitize-html');
 
 router.get("/", function (req, res) {
     let id = req.query.id;
     if (id) {
-        models.Post.findOne({_id: id}).populate('author').exec(function (err, post) {
+        models.Post.findOne({_id: id}).populate('author').populate('comments').exec(function (err, post) {
             if (err) {
                 res.status(500)
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
             }
             else {
+                console.log(post);
                 res.status(200)
                     .json({
                         success: true,
@@ -23,7 +24,7 @@ router.get("/", function (req, res) {
         });
     }
     else {
-        models.Post.find({}).populate('author').exec(function (err, posts) {
+        models.Post.find({}).populate('author').populate('comments').exec(function (err, posts) {
             if (err) {
                 res.status(500)
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
@@ -88,10 +89,9 @@ router.delete("/", function (req, res) {
 
 });
 
-
 router.post("/", function (req, res) {
-    const content = req.body.content;
-    const title = req.body.title;
+    const content = sanitizeHtml(req.body.content);
+    const title = sanitizeHtml(req.body.title);
     if (!content || !title) {
         return res.status(400).json({
             success: false,
@@ -112,7 +112,8 @@ router.post("/", function (req, res) {
                     {
                         author: decoded._doc._id,
                         content: content,
-                        title: title
+                        title: title,
+                        image:req.body.image
                     }
                 );
                 post.save(function (err) {

@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const User = require("../models/models.js").User;
+const sanitizeHtml = require('sanitize-html');
 
 /* GET home page. */
 router.post('/', function (req, res) {
-    const userName = req.body.username;
-    const userEmail = req.body.email;
+    const userName = sanitizeHtml(req.body.username);
+    const userEmail = sanitizeHtml(req.body.email);
     const userPasword = req.body.password;
     if (!userName || !userEmail || !userPasword) {
         return res.status(400).json({

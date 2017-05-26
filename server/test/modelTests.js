@@ -27,5 +27,17 @@ describe('User', function () {
             expect(err.errors).to.exist;
             done();
         })
+    });
+    it('should not save user with invalid username', function (done) {
+        const user = new User({
+            username: 'Bruce.@1',
+            password: 'pass',
+            email: 'test@test.com'
+        });
+        user.validate(function (err) {
+            expect(err).to.exist;
+            expect(err.errors).to.exist;
+            done();
+        })
     })
 });

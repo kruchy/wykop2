@@ -1,6 +1,8 @@
 
 import React from 'react';
 import PostItem from './PostItem.js';
+import $ from 'jquery'
+
 
 const mockData = {
     "data": [
@@ -84,18 +86,33 @@ export default class PostList extends React.Component {
         super(props);
         this.data = [];
         this.state = {
-            data: mockData["data"]
+            data: []
         };
     }
 
     componentDidMount() {
-        this.setState({ data: mockData["data"] });
+        $.ajax({
+            url: "/posts",
+            type: "get",
+            data: {
+                format: 'json'
+            },
+            success: function (response) {
+                this.setState({ data: response["posts"] });
+            }.bind(this),
+
+            error: function (response) {
+                console.log(response);
+            }
+
+        });
     }
+
 
     render() {
         const posts = this.state.data.map(function (post) {
             return (
-                <PostItem key={post.id} data={post} />
+                <PostItem key={post._id} data={post}/>
              );
         });
 

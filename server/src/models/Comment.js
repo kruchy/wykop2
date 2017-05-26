@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const User = require('./models').User;
+const Post = require('./models').Post;
 const Schema = mongoose.Schema;
 
-const postSchema = new Schema({
+
+const commentSchema = new Schema({
     author: {
         type: Schema.ObjectId,
         ref: 'User',
@@ -12,19 +14,18 @@ const postSchema = new Schema({
         type: String,
         required: true
     },
-    title: {
-        type: String,
-        required: true
-    },
-    image: {
-        type: String
-    },
-    comments: [{
+    post: {
         type: Schema.ObjectId,
-        ref: 'Comment'
-    }]
-
+        ref: 'User'
+    }
 
 });
 
-module.exports.postSchema = postSchema;
+commentSchema.virtual("posts", {
+    ref: "Post",
+    localField: "_id",
+    foreignField: "comments"
+});
+
+
+module.exports.commentSchema = commentSchema;
