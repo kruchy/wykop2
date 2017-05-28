@@ -1,6 +1,7 @@
 
 import React from 'react';
 import $ from 'jquery'
+import CommentsContainer from '../comments/CommentsContainer';
 
 
 
@@ -46,6 +47,7 @@ export default class PostContent extends React.Component {
                 <p className="datePost">
                     {"Posted on " + thisDate.toUTCString()}
                 </p>
+                <CommentsContainer/>
             </div>
         );
     }
