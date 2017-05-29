@@ -25,10 +25,8 @@ router.delete("/", function (req, res) {
                         message: 'Failed to authenticate token.'
                     });
             } else {
-                models.Comment.findOne({_id: commentId}).populate('author').exec(function (err, comment) {
+                models.Comment.findOne({_id: commentId}).populate('author').populate('posts').exec(function (err, comment) {
                     if (err || !comment) {
-                        console.log("eerr");
-
                         res.status(500)
                             .json({success: false, error: "Problem retrieving comment from server", reason: err});
                     }
@@ -40,9 +38,8 @@ router.delete("/", function (req, res) {
                             });
                     }
                     else {
-                        models.Post.update({post: comment.post}, {$pull: {comments: {_id: commentId}}}, {
+                        models.Post.update({comments: {_id: comment._id}}, {$pull: {comments: {_id: commentId}}}, {
                                 "new": true,
-                                "upsert": true
                             },
                             function (err, updatedPost) {
                                 comment.remove(function (err) {

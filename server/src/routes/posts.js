@@ -14,7 +14,6 @@ router.get("/", function (req, res) {
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
             }
             else {
-                console.log(post);
                 res.status(200)
                     .json({
                         success: true,
@@ -64,17 +63,31 @@ router.delete("/", function (req, res) {
                         message: 'Failed to authenticate token.'
                     });
             } else {
-                models.Post.findOneAndRemove({id: req.body.id}, function (err) {
+                models.Post.findOne({_id: req.body.id}).populate('comments').exec(function (err, post) {
                     if (err) {
                         res.status(500)
                             .json({success: false, error: "Problem deleting post from server", reason: err});
                     }
                     else {
-                        res.status(200)
-                            .json({
-                                success: true,
-                                message: 'Deleted post'
-                            });
+                        models.Comment.find({_id: {$in: post.comments}}).remove().exec(function (err) {
+                            post.remove(function (err) {
+                                if (err) {
+                                    return res.status(500)
+                                        .json({
+                                            success: false,
+                                            error: "Problem deleting post from server",
+                                            reason: err
+                                        });
+                                }
+                                else {
+                                    return res.status(200)
+                                        .json({
+                                            success: true,
+                                            message: 'Deleted post'
+                                        });
+                                }
+                            })
+                        });
                     }
                 })
             }
@@ -92,6 +105,7 @@ router.delete("/", function (req, res) {
 router.post("/", function (req, res) {
     const content = sanitizeHtml(req.body.content);
     const title = sanitizeHtml(req.body.title);
+
     if (!content || !title) {
         return res.status(400).json({
             success: false,
@@ -113,7 +127,7 @@ router.post("/", function (req, res) {
                         author: decoded._doc._id,
                         content: content,
                         title: title,
-                        image:req.body.image
+                        image: req.body.image
                     }
                 );
                 post.save(function (err) {
