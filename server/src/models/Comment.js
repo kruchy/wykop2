@@ -19,7 +19,7 @@ const commentSchema = new Schema({
         ref: 'User'
     }
 
-});
+}, { timestamps: { createdAt: 'created_at', updatedAt : 'updated_at' } });
 
 commentSchema.virtual("posts", {
     ref: "Post",
