@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, { PropTypes } from 'react';
 import CommentForm from './CommentForm';
 import CommentUpdates from './CommentUpdates';
 
@@ -31,15 +31,21 @@ const mockData = {
 
 
 export default class CommentsElements extends React.Component {
-    constructor(props) {
+    constructor(props, context) {
         super(props);
         this.data = [];
         this.state = {
             data: []
         };
     }
+
+    static contextTypes = {
+        comments: PropTypes.array
+    };
+
     componentDidMount() {
-        this.setState({ data: mockData["data"] });
+
+
     }
     render() {
         return (
@@ -47,7 +53,8 @@ export default class CommentsElements extends React.Component {
                 <div className="comment-form">
                     <CommentForm />
                 </div>
-                <CommentUpdates data={this.state.data} />
+                {console.log(this.context.comments)}
+                <CommentUpdates data={this.context.comments} />
             </div>
 
         );
