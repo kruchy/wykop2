@@ -131,30 +131,6 @@ describe('Creating posts', function () {
             });
     });
 
-    it('adds successfully new post with file', function (done) {
-        let user = createAndSaveUser();
-        chai.request(server)
-            .post('/posts/')
-            .attach('image',readFileSync('file.png'), 'file.png')
-            .field("content","test")
-            .field("title","title")
-            .field("token",require('../src/routes/login').createToken(user))
-            .end(function (err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.have.property('success');
-                res.body.success.should.be.equal(true);
-                res.body.should.have.property('post');
-                res.body.post.should.have.property('title');
-                res.body.post.should.have.property('content');
-                res.body.post.should.have.property('image');
-                res.body.post.content.should.be.equal('test');
-                res.body.post.title.should.be.equal('title');
-                res.body.should.have.property('author');
-                res.body.author.username.should.be.equal('Bruce');
-                done()
-            });
-    });
 
     it('fails gracefully when token is incorrect', function (done) {
         let user = createAndSaveUser();
