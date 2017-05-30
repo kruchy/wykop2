@@ -402,6 +402,66 @@ input::-webkit-input-placeholder {
     text-align: center;
 }
 
+/******* Comments ***********/
+
+#commentsContainer {
+    padding-top: 20px;
+    border: solid 1px #efefef;
+    margin: 10px 0px 10px 0px;
+}
+
+#comments-wall {
+    clear: both;
+    padding-top: 10px;
+}
+
+.comment-body {
+    min-height: 75px;
+    margin-bottom: 10px;
+    border-bottom: solid 1px #efefef;
+    padding: 10px 0px 10px 0px;
+    clear: both;
+}
+
+.comment-text {
+    margin-left: 75px;
+    word-wrap: break-word;
+    padding: 5px;
+    display: block;
+    word-wrap: break-word;
+}
+
+    .comment-text b {
+        display: block;
+        line-height: 30px
+    }
+
+.comment-delete {
+    float: right;
+    margin-right: 10px;
+    font-weight: bold;
+    padding: 4px;
+}
+
+#submitPost {
+    padding: 10px 15px 10px 15px;
+    font-weight: bold;
+    border: 1px solid #365899;
+    border-radius: 4px;
+}
+
+.comment-box {
+    display: block;
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    height: 50px;
+}
+
+.comment-form {
+    text-align: right;
+}
+
 .clear {
     clear: both;
 }
