@@ -72,12 +72,13 @@ function createAdmin(enabled) {
     return user;
 }
 
-function createCommentForUser(user)
+function createCommentForUser(user,replies)
 {
     let comment = new Comment(
         {
             content : 'Content',
-            author : user
+            author : user,
+            replies:replies
         }
     );
     comment.save(function (err) {
@@ -88,6 +89,8 @@ function createCommentForUser(user)
     });
     return comment;
 }
+
+
 
 module.exports.clearDatabase = clearDatabase;
 module.exports.createAdmin = createAdmin;

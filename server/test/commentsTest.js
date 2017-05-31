@@ -35,14 +35,16 @@ describe('Creating comments', function () {
                 token: require('../src/routes/login').createToken(user)
             })
             .end(function (err, res) {
+                // console.log(res);
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.have.property('success');
                 res.body.success.should.be.equal(true);
                 res.body.should.have.property('comment');
                 res.body.comment.should.have.property('content');
-                res.body.comment.content.should.be.equal('test');
                 res.body.comment.should.have.property('author');
+                res.body.comment.author.should.have.property('username');
+                res.body.comment.should.have.property('replies');
                 done()
             });
     });

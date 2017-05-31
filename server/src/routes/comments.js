@@ -113,9 +113,9 @@ router.post("/", function (req, res) {
                             )
                         }
                         else {
-                            models.Post.update({_id: postId}, {$push: {comments: comment._id}}, {}, function (err) {
+                            models.Post.findOneAndUpdate({_id: postId}, {$push: {comments: comment._id}}, {new: true}, function (err, post) {
                                 if (err) {
-                                    res.status(500).json(
+                                    return res.status(500).json(
                                         {
                                             success: false,
                                             message: 'Failed to update post.',
@@ -124,7 +124,8 @@ router.post("/", function (req, res) {
                                     )
                                 }
                                 else {
-                                    models.Comment.populate(comment, {path: 'author'}, function (err, comment) {
+
+                                    models.Comment.findOne({_id: comment._id}).deepPopulate(['author']).exec(function (err, _comment) {
                                         if (err) {
                                             res.status(500).json(
                                                 {
@@ -136,7 +137,7 @@ router.post("/", function (req, res) {
                                         } else {
                                             return res.status(200).json({
                                                 success: true,
-                                                comment: comment
+                                                comment: _comment
                                             })
                                         }
                                     });

@@ -25,13 +25,14 @@ describe('Creating replies to comments', function () {
     });
     it('adds successfully new reply to comment', function (done) {
         let user = createAndSaveUser();
-        let post = createPostForUser(user);
+        let subComment = createCommentForUser(user);
+        let mainComment = createCommentForUser(user);
 
         chai.request(server)
             .post('/reply/')
             .send({
                 content: 'test',
-                postId: post._id,
+                commentId: mainComment._id,
                 token: require('../src/routes/login').createToken(user)
             })
             .end(function (err, res) {
@@ -41,40 +42,44 @@ describe('Creating replies to comments', function () {
                 res.body.success.should.be.equal(true);
                 res.body.should.have.property('comment');
                 res.body.comment.should.have.property('content');
-                res.body.comment.content.should.be.equal('test');
+                res.body.comment.should.have.property('author');
+                res.body.comment.author.should.have.property('username');
+                res.body.comment.should.have.property('replies');
+                res.body.comment.replies[0].should.have.property('content');
+                res.body.comment.replies[0].content.should.be.equal('test');
                 res.body.comment.should.have.property('author');
                 done()
             });
     });
 });
 
-describe('Delete reply', function () {
-    let server;
-    beforeEach(function () {
-        server = require('../app').server;
-        clearDatabase();
-    });
-    afterEach(function () {
-        clearDatabase();
-        server.close();
-    });
-    it('removes successfully reply ', function (done) {
-        let user = createAndSaveUser();
-        let comment = createCommentForUser(user);
-        let post = createPostForUser(user, [comment]);
-        chai.request(server)
-            .delete('/comment/')
-            .send({
-                commentId: comment._id,
-                token: require('../src/routes/login').createToken(user)
-            })
-            .end(function (err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.have.property('success');
-                res.body.success.should.be.equal(true);
-                done()
-            });
-    });
-
-});
+// describe('Delete reply', function () {
+//     let server;
+//     beforeEach(function () {
+//         server = require('../app').server;
+//         clearDatabase();
+//     });
+//     afterEach(function () {
+//         clearDatabase();
+//         server.close();
+//     });
+//     it('removes successfully reply ', function (done) {
+//         let user = createAndSaveUser();
+//         let comment = createCommentForUser(user);
+//         let post = createPostForUser(user, [comment]);
+//         chai.request(server)
+//             .delete('/comment/')
+//             .send({
+//                 commentId: comment._id,
+//                 token: require('../src/routes/login').createToken(user)
+//             })
+//             .end(function (err, res) {
+//                 res.should.have.status(200);
+//                 res.should.be.json;
+//                 res.body.should.have.property('success');
+//                 res.body.success.should.be.equal(true);
+//                 done()
+//             });
+//     });
+//
+// });

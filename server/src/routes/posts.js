@@ -7,11 +7,9 @@ const sanitizeHtml = require('sanitize-html');
 
 router.get("/", function (req, res) {
     let id = req.query.id;
+    let query = 'author comments.author comments.replies'
     if (id) {
-        models.Post.findOne({_id: id}).populate([{path: 'author'}, {
-            path: 'comments',
-            populate: {path: 'author'}
-        }]).exec(function (err, post) {
+        models.Post.findOne({_id: id}).deepPopulate('author comments.author comments.replies').exec(function (err, post) {
             if (err) {
                 res.status(500)
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
@@ -26,14 +24,14 @@ router.get("/", function (req, res) {
         });
     }
     else {
-        models.Post.find({}).populate([{path: 'author'}, {
-            path: 'comments',
-            populate: {path: 'author'}
-        }]).exec(function (err, posts) {
+
+
+        models.Post.find().deepPopulate('author comments.author comments.replies.author').exec(function (err, posts) {
             if (err) {
                 res.status(500)
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
             }
+
             else {
                 res.status(200)
                     .json({success: true, posts: posts});

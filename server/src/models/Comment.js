@@ -17,9 +17,13 @@ const commentSchema = new Schema({
     post: {
         type: Schema.ObjectId,
         ref: 'User'
-    }
+    },
+    replies: [{
+        type: Schema.ObjectId,
+        ref: 'Comment'
+    }]
 
-}, { timestamps: { createdAt: 'created_at', updatedAt : 'updated_at' } });
+}, {timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
 
 commentSchema.virtual("posts", {
     ref: "Post",

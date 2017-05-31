@@ -12,6 +12,7 @@ const posts = require('./src/routes/posts');
 const register = require('./src/routes/register');
 const admin = require('./src/routes/admin');
 const comment = require('./src/routes/comments');
+const reply = require('./src/routes/reply');
 
 const monk = require('monk');
 const debug = require('debug')('untitled:server');
@@ -41,6 +42,7 @@ app.use('/posts', posts);
 app.use('/register', register);
 app.use('/admin', admin);
 app.use('/comment', comment);
+app.use('/reply', reply);
 
 const swagger = require("swagger-node-express");
 const subpath = express();

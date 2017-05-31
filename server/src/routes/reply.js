@@ -78,7 +78,7 @@ router.delete("/", function (req, res) {
 router.post("/", function (req, res) {
     const content = sanitizeHtml(req.body.content);
     const commentId = req.body.commentId;
-    if (!content || !postId) {
+    if (!content || !content) {
         return res.status(400).json({
             success: false,
             message: 'Invalid parameters provided.'
@@ -113,9 +113,9 @@ router.post("/", function (req, res) {
                             )
                         }
                         else {
-                            models.Comment.update({_id: commentId}, {$push: {replies: comment._id}}, {}, function (err) {
+                            models.Comment.findOneAndUpdate({_id: commentId}, {$push: {replies: comment._id}}, {new: true}, function (err, comment) {
                                 if (err) {
-                                    res.status(500).json(
+                                    return res.status(500).json(
                                         {
                                             success: false,
                                             message: 'Failed to update comment with reply.',
@@ -124,10 +124,33 @@ router.post("/", function (req, res) {
                                     )
                                 }
                                 else {
-                                    res.status(200).json({
-                                        success: true,
-                                        comment: comment
-                                    })
+                                    models.Comment.populate(comment, [
+                                            {
+                                                path: 'author'
+                                            },
+                                            {
+                                                path: 'replies',
+                                                populate: {
+                                                    path: 'author'
+                                                }
+                                            }]
+                                        , function (err, comment) {
+                                            if (err) {
+                                                res.status(500).json(
+                                                    {
+                                                        success: false,
+                                                        message: 'Failed to update comment with reply.',
+                                                        reason: err
+                                                    }
+                                                )
+                                            } else {
+                                                res.status(200).json({
+                                                    success: true,
+                                                    comment: comment
+                                                })
+                                            }
+                                        })
+
                                 }
                             });
                         }
