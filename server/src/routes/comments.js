@@ -124,10 +124,24 @@ router.post("/", function (req, res) {
                                     )
                                 }
                                 else {
-                                    res.status(200).json({
-                                        success: true,
-                                        comment: comment
-                                    })
+                                    models.Comment.populate(comment, {path: 'author'}, function (err, comment) {
+                                        if (err) {
+                                            res.status(500).json(
+                                                {
+                                                    success: false,
+                                                    message: 'Failed to update comment.',
+                                                    reason: err
+                                                }
+                                            )
+                                        } else {
+                                            return res.status(200).json({
+                                                success: true,
+                                                comment: comment
+                                            })
+                                        }
+                                    });
+
+
                                 }
                             });
                         }
@@ -135,7 +149,6 @@ router.post("/", function (req, res) {
                 }
             }
         )
-
     }
     else {
         return res.status(403).json({
