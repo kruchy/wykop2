@@ -47,7 +47,9 @@ export default class PostContent extends React.Component {
                 <p className="datePost">
                     {"Posted on " + thisDate.toUTCString()}
                 </p>
-                <CommentsContainer/>
+                {(this.state.data.length !== 0) &&
+                    <CommentsContainer comments={this.state.data.comments} postid={this.state.data._id} />
+                }
             </div>
         );
     }

@@ -8,7 +8,10 @@ const sanitizeHtml = require('sanitize-html');
 router.get("/", function (req, res) {
     let id = req.query.id;
     if (id) {
-        models.Post.findOne({_id: id}).populate('author').populate('comments').exec(function (err, post) {
+        models.Post.findOne({_id: id}).populate([{path: 'author'}, {
+            path: 'comments',
+            populate: {path: 'author'}
+        }]).exec(function (err, post) {
             if (err) {
                 res.status(500)
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
@@ -23,7 +26,10 @@ router.get("/", function (req, res) {
         });
     }
     else {
-        models.Post.find({}).populate('author').populate('comments').exec(function (err, posts) {
+        models.Post.find({}).populate([{path: 'author'}, {
+            path: 'comments',
+            populate: {path: 'author'}
+        }]).exec(function (err, posts) {
             if (err) {
                 res.status(500)
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
@@ -139,11 +145,22 @@ router.post("/", function (req, res) {
                         });
                     }
                     else {
-                        res.status(200).json({
-                            success: true,
-                            post: post,
-                            author: decoded._doc,
+                        models.Post.populate(post, {path: 'author'}, function (err, post) {
+                            if (err) {
+                                return res.status(500).json({
+                                    success: false,
+                                    error: 'Could not save post',
+                                    reason: err
+                                });
+                            } else {
+                                return res.status(200).json({
+                                    success: true,
+                                    post: post,
+                                    author: decoded._doc,
+                                });
+                            }
                         });
+
                     }
                 });
             }

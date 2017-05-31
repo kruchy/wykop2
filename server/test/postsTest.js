@@ -131,6 +131,7 @@ describe('Creating posts', function () {
             });
     });
 
+
     it('fails gracefully when token is incorrect', function (done) {
         let user = createAndSaveUser();
         chai.request(server)
