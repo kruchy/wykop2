@@ -131,11 +131,22 @@ router.post("/", function (req, res) {
                         });
                     }
                     else {
-                        res.status(200).json({
-                            success: true,
-                            post: post,
-                            author: decoded._doc,
+                        models.Post.populate(post, {path: 'author'}, function (err, post) {
+                            if (err) {
+                                return res.status(500).json({
+                                    success: false,
+                                    error: 'Could not save post',
+                                    reason: err
+                                });
+                            } else {
+                                return res.status(200).json({
+                                    success: true,
+                                    post: post,
+                                    author: decoded._doc,
+                                });
+                            }
                         });
+
                     }
                 });
             }
