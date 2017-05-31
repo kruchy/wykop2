@@ -20,16 +20,9 @@ export default class CommentForm extends React.Component {
         const postid = encodeURIComponent(this.context.postid);
         const formData = `postId=${postid}&content=${content}&token=${Auth.getToken()}`;
 
-        $.ajax({
-            url: "/comment",
-            type: "post",
-            data: formData,
-            success: function (response) {
-                console.log(response)
-                this.setState({ user_comment: '' });
-            }.bind(this)
+        this.props.onCommentSubmit(formData);
 
-        });
+        this.setState({ user_comment: '' });
 
     }
 

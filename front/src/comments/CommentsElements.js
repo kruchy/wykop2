@@ -1,6 +1,7 @@
 ﻿import React, { PropTypes } from 'react';
 import CommentForm from './CommentForm';
 import CommentUpdates from './CommentUpdates';
+import $ from 'jquery';
 
 
 const mockData = {
@@ -31,30 +32,51 @@ const mockData = {
 
 
 export default class CommentsElements extends React.Component {
-    constructor(props, context) {
-        super(props);
-        this.data = [];
-        this.state = {
-            data: []
-        };
-    }
 
     static contextTypes = {
         comments: PropTypes.array
     };
 
+    constructor(props, context) {
+        super(props);
+        this.data = [];
+        this.state = {
+            data: context.comments
+        };
+
+        this.commentAjaxSubmit = this.commentAjaxSubmit.bind(this);
+
+    }
+
+
     componentDidMount() {
 
 
     }
+
+    commentAjaxSubmit(formData) {
+        $.ajax({
+            url: "/comment",
+            type: "post",
+            data: formData,
+            success: function (response) {
+                var comments = this.state.data;
+                var newComment = comments.concat([response.comment]);
+                this.setState({ data: newComment });
+                
+            }.bind(this)
+
+        });
+    }
+
     render() {
         return (
             <div>
                 <div className="comment-form">
-                    <CommentForm />
+                    <CommentForm onCommentSubmit={this.commentAjaxSubmit} />
                 </div>
                 {console.log(this.context.comments)}
-                <CommentUpdates data={this.context.comments} />
+                <CommentUpdates data={this.state.data} />
             </div>
 
         );

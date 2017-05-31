@@ -9,7 +9,6 @@ export default class CommentsContainer extends React.Component {
     };
 
     getChildContext() {
-        console.log(this.props)
         return {
             comments: this.props.comments,
             postid: this.props.postid
