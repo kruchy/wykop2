@@ -23,7 +23,8 @@ function createAndSaveUser() {
 function clearDatabase() {
     let promises = [
         User.remove().exec(),
-        Post.remove().exec()
+        Post.remove().exec(),
+        Comment.remove().exec()
     ];
 
     Promise.all(promises).then(function () {
