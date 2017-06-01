@@ -22,9 +22,9 @@ db.once("open", function () {
 });
 
 let deepPopulate = require('mongoose-deep-populate')(mongoose);
-Posts.postSchema.plugin(deepPopulate,{});
-Comments.commentSchema.plugin(deepPopulate,{});
-Users.userSchema.plugin(deepPopulate,{});
+Posts.postSchema.plugin(deepPopulate, {});
+Comments.commentSchema.plugin(deepPopulate, {});
+Users.userSchema.plugin(deepPopulate, {});
 
 module.exports.Post = mongoose.model("Post", Posts.postSchema);
 module.exports.Comment = mongoose.model("Comment", Comments.commentSchema);

@@ -12,7 +12,7 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     }
-},{ timestamps: { createdAt: 'created_at', updatedAt : 'updated_at' } });
+}, {timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
 
 userSchema.statics.getUsers = function (cb) {
     return this.find({}, cb);

@@ -19,8 +19,7 @@ const subCommentSchema = new Schema({
         ref: 'User'
     }
 
-}, { timestamps: { createdAt: 'created_at', updatedAt : 'updated_at' } });
-
+}, {timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
 
 
 commentSchema.virtual("posts", {
