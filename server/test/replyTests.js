@@ -53,33 +53,33 @@ describe('Creating replies to comments', function () {
     });
 });
 
-// describe('Delete reply', function () {
-//     let server;
-//     beforeEach(function () {
-//         server = require('../app').server;
-//         clearDatabase();
-//     });
-//     afterEach(function () {
-//         clearDatabase();
-//         server.close();
-//     });
-//     it('removes successfully reply ', function (done) {
-//         let user = createAndSaveUser();
-//         let comment = createCommentForUser(user);
-//         let post = createPostForUser(user, [comment]);
-//         chai.request(server)
-//             .delete('/comment/')
-//             .send({
-//                 commentId: comment._id,
-//                 token: require('../src/routes/login').createToken(user)
-//             })
-//             .end(function (err, res) {
-//                 res.should.have.status(200);
-//                 res.should.be.json;
-//                 res.body.should.have.property('success');
-//                 res.body.success.should.be.equal(true);
-//                 done()
-//             });
-//     });
-//
-// });
+describe('Delete reply', function () {
+    let server;
+    beforeEach(function () {
+        server = require('../app').server;
+        clearDatabase();
+    });
+    afterEach(function () {
+        clearDatabase();
+        server.close();
+    });
+    it('removes successfully reply ', function (done) {
+        let user = createAndSaveUser();
+        let subComment = createCommentForUser(user);
+        let mainComment = createCommentForUser(user,[subComment]);
+        chai.request(server)
+            .delete('/reply/')
+            .send({
+                commentId: subComment._id,
+                token: require('../src/routes/login').createToken(user)
+            })
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property('success');
+                res.body.success.should.be.equal(true);
+                done()
+            });
+    });
+
+});

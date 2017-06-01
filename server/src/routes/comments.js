@@ -25,10 +25,11 @@ router.delete("/", function (req, res) {
                         message: 'Failed to authenticate token.'
                     });
             } else {
-                models.Comment.findOne({_id: commentId}).populate('author').populate('posts').exec(function (err, comment) {
+                models.Comment.findOne({_id: commentId}).deepPopulate('author').exec(function (err, comment) {
                     if (err || !comment) {
                         res.status(500)
                             .json({success: false, error: "Problem retrieving comment from server", reason: err});
+                        ``
                     }
                     if (decoded._doc.username !== comment.author.username) {
                         res.status(403).json(
@@ -38,27 +39,26 @@ router.delete("/", function (req, res) {
                             });
                     }
                     else {
-                        models.Post.update({comments: {_id: comment._id}}, {$pull: {comments: {_id: commentId}}}, {
-                                "new": true,
-                            },
+                        models.Post.update({comments: {_id: comment._id}}, {$pull: {comments: {_id: commentId}}}, {"new": true,},
                             function (err, updatedPost) {
-                                comment.remove(function (err) {
-                                    if (err) {
-                                        res.status(500)
-                                            .json({
-                                                success: false,
-                                                message: 'Problem removing comment.',
-                                                reason: err
-                                            });
-                                    } else {
-                                        res.status(200)
-                                            .json({
-                                                success: true,
-                                                message: 'Deleted comment.'
-                                            })
-                                    }
+                                models.Comment.find({_id: {$in: comment.replies}}).remove().exec(function (err) {
+                                    comment.remove(function (err) {
+                                        if (err) {
+                                            res.status(500)
+                                                .json({
+                                                    success: false,
+                                                    message: 'Problem removing comment.',
+                                                    reason: err
+                                                });
+                                        } else {
+                                            res.status(200)
+                                                .json({
+                                                    success: true,
+                                                    message: 'Deleted comment.'
+                                                })
+                                        }
+                                    })
                                 })
-
                             });
                     }
                 })

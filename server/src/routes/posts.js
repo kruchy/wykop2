@@ -7,10 +7,10 @@ const sanitizeHtml = require('sanitize-html');
 
 router.get("/", function (req, res) {
     let id = req.query.id;
-    let query = 'author comments.author comments.replies'
+    let query = 'author comments.author comments.replies';
     if (id) {
         models.Post.findOne({_id: id}).deepPopulate('author comments.author comments.replies').exec(function (err, post) {
-            if (err) {
+            if (err || !post) {
                 res.status(500)
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
             }
@@ -27,7 +27,7 @@ router.get("/", function (req, res) {
 
 
         models.Post.find().deepPopulate('author comments.author comments.replies.author').exec(function (err, posts) {
-            if (err) {
+            if (err || !posts) {
                 res.status(500)
                     .json({success: false, error: "Problem retrieving post from server", reason: err});
             }
@@ -53,7 +53,8 @@ router.delete("/", function (req, res) {
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
     if (token) {
         jwt.verify(token, config.secret, function (err, decoded) {
-            if (!decoded._doc.admin) {
+
+            if (!decoded || !decoded._doc.admin) {
                 return res.status(403).json(
                     {
                         success: false,
@@ -67,13 +68,25 @@ router.delete("/", function (req, res) {
                         message: 'Failed to authenticate token.'
                     });
             } else {
-                models.Post.findOne({_id: req.body.id}).populate('comments').exec(function (err, post) {
-                    if (err) {
+                models.Post.findOne({_id: req.body.id}).deepPopulate('comments.replies').exec(function (err, post) {
+                    if (err || !post) {
                         res.status(500)
                             .json({success: false, error: "Problem deleting post from server", reason: err});
                     }
                     else {
-                        models.Comment.find({_id: {$in: post.comments}}).remove().exec(function (err) {
+
+                        let queries = [];
+                        post.comments.forEach(function (com) {
+                            console.log(com);
+                            com.replies.forEach(function (rep) {
+                                queries = queries.concat(rep);
+                            })
+                        });
+
+                        queries = queries.concat(post.comments);
+                        console.log("Queries " + queries);
+
+                        models.Comment.find({_id: {$in: queries}}).remove().exec(function (err) {
                             post.remove(function (err) {
                                 if (err) {
                                     return res.status(500)

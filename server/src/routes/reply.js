@@ -7,8 +7,8 @@ const sanitizeHtml = require('sanitize-html');
 
 
 router.delete("/", function (req, res) {
-    const commentId = req.body.commentId;
-    if (!commentId) {
+    const replyId = req.body.commentId;
+    if (!replyId) {
         return res.status(500).json(
             {
                 success: false,
@@ -25,36 +25,34 @@ router.delete("/", function (req, res) {
                         message: 'Failed to authenticate token.'
                     });
             } else {
-                models.Comment.findOne({_id: commentId}).populate('author').populate('posts').exec(function (err, comment) {
-                    if (err || !comment) {
-                        res.status(500)
-                            .json({success: false, error: "Problem retrieving comment from server", reason: err});
+                models.Comment.findOne({_id: replyId}).deepPopulate('author').exec(function (err, reply) {
+                    if (err || !reply) {
+                        return res.status(500)
+                            .json({success: false, error: "Problem retrieving reply from server", reason: err});
                     }
-                    if (decoded._doc.username !== comment.author.username) {
-                        res.status(403).json(
+                    if (decoded._doc.username !== reply.author.username) {
+                        return res.status(403).json(
                             {
                                 success: false,
                                 message: 'Forbidden.'
                             });
                     }
                     else {
-                        models.Post.update({replies: {_id: comment._id}}, {$pull: {comments: {_id: commentId}}}, {
-                                "new": true,
-                            },
-                            function (err, updatedPost) {
-                                comment.remove(function (err) {
+                        models.Comment.update({replies: {_id: reply._id}}, {$pull: {replies: {_id: replyId}}}, {"new": true,},
+                            function (err, updatedComment) {
+                                reply.remove(function (err) {
                                     if (err) {
                                         res.status(500)
                                             .json({
                                                 success: false,
-                                                message: 'Problem removing comment.',
+                                                message: 'Problem removing reply.',
                                                 reason: err
                                             });
                                     } else {
                                         res.status(200)
                                             .json({
                                                 success: true,
-                                                message: 'Deleted comment.'
+                                                message: 'Deleted reply.'
                                             })
                                     }
                                 })
