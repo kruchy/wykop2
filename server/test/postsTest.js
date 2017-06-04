@@ -7,6 +7,8 @@ const createAndSaveUser = utils.createAndSaveUser;
 const createPostForUser = utils.createPostForUser;
 const createAdmin = utils.createAdmin;
 
+const {readFileSync} = require("fs");
+
 
 chai.use(chaiHttp);
 process.env.NODE_ENV = 'test';
@@ -43,6 +45,7 @@ describe('Getting posts', function () {
                 res.body.post.should.have.property('author');
                 res.body.post.should.have.property('content');
                 res.body.post.should.have.property('title');
+                res.body.post.should.have.property('comments');
                 res.body.post.author.should.have.property('username');
                 res.body.post.author.username.should.equal('Bruce');
                 res.body.post.content.should.equal('Test');
@@ -63,6 +66,7 @@ describe('Getting posts', function () {
                 res.body.posts[0].should.have.property('author');
                 res.body.posts[0].should.have.property('content');
                 res.body.posts[0].should.have.property('title');
+                res.body.posts[0].should.have.property('comments');
                 res.body.posts[0].author.should.have.property('username');
                 res.body.posts[0].author.username.should.equal('Bruce');
                 res.body.posts[0].content.should.equal('Test');
@@ -126,6 +130,8 @@ describe('Creating posts', function () {
                 done()
             });
     });
+
+
     it('fails gracefully when token is incorrect', function (done) {
         let user = createAndSaveUser();
         chai.request(server)

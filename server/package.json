@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "start": "node ./app",
-    "test": "mocha -R spec test\\*"
+    "test": "mocha -R spec test/*"
   },
   "dependencies": {
     "basic-auth-mongoose": "^0.1.1",
@@ -27,15 +27,21 @@
     "debug": "~2.6.3",
     "express": "~4.15.2",
     "express-basic-auth": "^1.0.1",
+    "express-form-data": "^2.0.0",
     "jade": "~1.11.0",
     "jsonwebtoken": "^7.4.0",
+    "minimist": "*",
     "mocha": "~3.2.0",
     "mongodb": "latest",
     "mongoose": "^4.9.6",
+    "mongoose-deep-populate": "^3.0.0",
     "monk": "^4.0.0",
     "morgan": "~1.8.1",
+    "multer": "latest",
+    "sanitize-html": "^1.14.1",
     "serve-favicon": "~2.4.2",
     "sinon": "^2.1.0",
-    "sinon-mongoose": "^2.0.0"
+    "sinon-mongoose": "^2.0.0",
+    "swagger-node-express": "~2.0"
   }
 }

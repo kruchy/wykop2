@@ -11,6 +11,8 @@ const login = require('./src/routes/login');
 const posts = require('./src/routes/posts');
 const register = require('./src/routes/register');
 const admin = require('./src/routes/admin');
+const comment = require('./src/routes/comments');
+const reply = require('./src/routes/reply');
 
 const monk = require('monk');
 const debug = require('debug')('untitled:server');
@@ -34,12 +36,39 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use('/', index);
 app.use('/user', users);
 app.use('/login', login);
 app.use('/posts', posts);
 app.use('/register', register);
 app.use('/admin', admin);
+app.use('/comment', comment);
+app.use('/reply', reply);
+
+const swagger = require("swagger-node-express");
+const subpath = express();
+
+app.use("/", subpath);
+
+app.use(express.static('dist'));
+
+swagger.setAppHandler(subpath);
+
+swagger.setApiInfo({
+    title: "Wykop2 Api",
+    description: "API to do manage Wykop2 functionality",
+    termsOfServiceUrl: "",
+    contact: "Krzysztof Misiak",
+    license: "",
+    licenseUrl: ""
+});
+subpath.get('/', function (req, res) {
+    res.sendfile(__dirname + '/dist/index.html');
+});
+swagger.configureSwaggerPaths('', 'api-docs', '');
+
+let domain = 'localhost';
+const applicationUrl = 'http://' + domain;
+swagger.configure(applicationUrl, '1.0.0');
 
 app.use(function(req, res, next) {
   const err = new Error('Not Found');

@@ -12,7 +12,7 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     }
-});
+}, {timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
 
 userSchema.statics.getUsers = function (cb) {
     return this.find({}, cb);
@@ -26,7 +26,9 @@ userSchema.methods.findPosts = function (cb) {
         !err ? cb(null, author) : cb(null, author);
     })
 };
-
-
 userSchema.plugin(require('basic-auth-mongoose'));
+
+userSchema.path('username').validate(function (v) {
+    return v.match('^[A-Za-z0-9_-]{3,16}$');
+});
 module.exports.userSchema = userSchema;

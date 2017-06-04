@@ -32,8 +32,7 @@ function setAdminOnUser(req, res, enabled) {
             } else {
                 if (decoded._doc.admin) {
                     const username = req.body.username;
-                    if(!req.body.username)
-                    {
+                    if (!req.body.username) {
                         errorResponse(res, 400, 'Username not provided', null);
                         return;
                     }

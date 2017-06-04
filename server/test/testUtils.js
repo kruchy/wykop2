@@ -1,5 +1,6 @@
 const User = require('../src/models/models').User;
 const Post = require('../src/models/models').Post;
+const Comment = require('../src/models/models').Comment;
 
 function createAndSaveUser() {
     let user = new User(
@@ -22,19 +23,21 @@ function createAndSaveUser() {
 function clearDatabase() {
     let promises = [
         User.remove().exec(),
-        Post.remove().exec()
+        Post.remove().exec(),
+        Comment.remove().exec()
     ];
 
     Promise.all(promises).then(function () {
     });
 }
 
-function createPostForUser(user) {
+function createPostForUser(user,comments) {
     let post = new Post(
         {
-            author: user._id,
+            author: user,
             content: 'Test',
-            title: 'Title'
+            title: 'Title',
+            comments:comments
         }
     );
     post.save(function (err) {
@@ -42,14 +45,13 @@ function createPostForUser(user) {
             throw err;
         }
         else {
-            post.populate('author', function (err, populatedPost) {
-                if (err)
-                    throw err;
-            });
+
         }
     });
     return post;
 }
+
+
 
 function createAdmin(enabled) {
 
@@ -71,7 +73,28 @@ function createAdmin(enabled) {
     return user;
 }
 
+function createCommentForUser(user,replies)
+{
+    let comment = new Comment(
+        {
+            content : 'Content',
+            author : user,
+            replies:replies
+        }
+    );
+    comment.save(function (err) {
+        if(err)
+        {
+            throw err;
+        }
+    });
+    return comment;
+}
+
+
+
 module.exports.clearDatabase = clearDatabase;
 module.exports.createAdmin = createAdmin;
 module.exports.createAndSaveUser = createAndSaveUser;
 module.exports.createPostForUser = createPostForUser;
+module.exports.createCommentForUser= createCommentForUser;

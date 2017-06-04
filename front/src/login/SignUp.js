@@ -74,8 +74,7 @@ export default class SignUp extends React.Component {
                                 <div className="cols-sm-10">
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-user fa" aria-hidden="true"></i></span>
-                                        <input type="text" className="form-control" name="username" id="username" placeholder="Wpisz nazwę użytkownika" onChange={this.handleChange} value={this.state.user.username} />
-                                    </div>
+                                        <input type="text" className="form-control" name="username" id="username" placeholder="Wpisz nazwę użytkownika" onChange={this.handleChange} value={this.state.user.username} />                                    </div>
                                 </div>
                             </div>
                             <div className="form-group">
