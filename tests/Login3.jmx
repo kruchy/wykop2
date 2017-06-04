@@ -71,9 +71,15 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
+<<<<<<< HEAD
           <stringProp name="LoopController.loops">10</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">100</stringProp>
+=======
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">300</stringProp>
+>>>>>>> 63da7dcda11514c912fd35bcc3a37c7c09a470f8
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <longProp name="ThreadGroup.start_time">1363247040000</longProp>
         <longProp name="ThreadGroup.end_time">1363247040000</longProp>
@@ -379,6 +385,28 @@ SampleResult.setResponseData(&quot;&quot;+result,&quot;UTF-8&quot;);</stringProp
             <stringProp name="filename"></stringProp>
           </ResultCollector>
           <hashTree/>
+<<<<<<< HEAD
+=======
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+            <stringProp name="cacheKey"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">import com.mongodb.DB;
+import org.apache.jmeter.protocol.mongodb.config.MongoDBHolder;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.DBCollection;
+
+DB db = MongoDBHolder.getDBFromSource(&quot;wykop2&quot;, &quot;wykop2&quot;);
+DBCollection coll = db.getCollection(&quot;users&quot;);
+//
+//int size = coll.count();
+coll.remove({})
+//SampleResult.setResponseData(&quot;&quot;+coll.count(),&quot;UTF-8&quot;);</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
+>>>>>>> 63da7dcda11514c912fd35bcc3a37c7c09a470f8
         </hashTree>
         <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
