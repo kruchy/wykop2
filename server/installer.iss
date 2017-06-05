@@ -18,6 +18,7 @@
 #define NODE64 "node-v6.10.3-x64.msi"
 #define NODE "node-v6.10.3-x64.msi"
 #define MONGODB "mongodb-win32-x86_64.msi"
+#define VCREDIST "VC_redist.x64.exe"
 
 
 [Setup]
@@ -56,6 +57,7 @@ Source: ".\bin\{#NODE64}"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\bin\{#MONGODB}"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\bin\{#NSSM64}"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\bin\{#NSSM32}"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\bin\{#VCREDIST}"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\public\{#MyAppIcon}"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\build\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
@@ -67,6 +69,9 @@ Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFi
 [Run]
 ; postinstall launch
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: shellexec postinstall skipifsilent runhidden
+
+; Install VCREDIST
+Filename: "{app}\{#VCREDIST}"; Check: VCRedistNeedsInstall
 
 ; Install Node
 Filename: "{sys}\msiexec.exe"; Parameters: "/passive /i ""{app}\{#NODE}""";
@@ -106,3 +111,42 @@ Filename: "{sys}\msiexec.exe"; Parameters: "/passive /x ""{app}\{#MONGODB}""";
 
 ; Remove all leftovers
 Filename: "{sys}\rmdir"; Parameters: "-r ""{app}""";
+
+
+
+[Code]
+#IFDEF UNICODE
+#DEFINE AW "W"
+#ELSE
+#DEFINE AW "A"
+#ENDIF
+type
+INSTALLSTATE = Longint;
+const
+INSTALLSTATE_INVALIDARG = -2;  { An invalid parameter was passed to the function. }
+INSTALLSTATE_UNKNOWN = -1;     { The product is neither advertised or installed. }
+INSTALLSTATE_ADVERTISED = 1;   { The product is advertised but not installed. }
+INSTALLSTATE_ABSENT = 2;       { The product is installed for a different user. }
+INSTALLSTATE_DEFAULT = 5;      { The product is installed for the current user. }
+
+{ Visual C++ 2015 Redistributable }
+VC_2015_REDIST_X64 = '{A1C31BA5-5438-3A07-9EEE-A5FB2D0FDE36}';
+
+function MsiQueryProductState(szProduct: string): INSTALLSTATE;
+external 'MsiQueryProductState{#AW}@msi.dll stdcall';
+
+function VCVersionInstalled(const ProductID: string): Boolean;
+begin
+Result := MsiQueryProductState(ProductID) = INSTALLSTATE_DEFAULT;
+end;
+
+function VCRedistNeedsInstall: Boolean;
+begin
+{ here the Result must be True when you need to install your VCRedist }
+{ or False when you don't need to, so now it's upon you how you build }
+{ this statement, the following won't install your VC redist only when }
+{ the Visual C++ 2010 Redist (x86) and Visual C++ 2010 SP1 Redist(x86) }
+{ are installed for the current user }
+Result := not (VCVersionInstalled(VC_2015_REDIST_X64) and
+VCVersionInstalled(VC_2015_REDIST_X64));
+end;
