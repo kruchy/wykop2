@@ -12,16 +12,14 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Marek on 2017-06-05.
  */
-public class ConnectivityTests {
-
-    WebDriver driver;
+public class ConnectivityTests extends TestCase{
 
     public ConnectivityTests(WebDriver driver){
-        this.driver = driver;
+        super(driver);
     }
 
     public void testAccesHomePage(){
-        driver.get("http://localhost:3000");
+        driver.get(homePage);
         assertEquals("Wykop 2",driver.getTitle());
     }
 

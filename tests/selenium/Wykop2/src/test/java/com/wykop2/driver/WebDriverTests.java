@@ -1,5 +1,6 @@
 package com.wykop2.driver;
 
+import com.wykop2.testcase.AuthTests;
 import com.wykop2.testcase.ConnectivityTests;
 import org.junit.After;
 import org.junit.Before;
@@ -24,13 +25,18 @@ public abstract class WebDriverTests {
         driver.quit();
     }
 
+//    @Test
+//    public void testConnectivity(){
+//        ConnectivityTests tests = new ConnectivityTests(driver);
+//        tests.testAccesHomePage();
+//        tests.testGoToRegisterPage();
+//        tests.testGoToLoginPage();
+//    }
+
     @Test
-    public void testConnectivity(){
-        ConnectivityTests tests = new ConnectivityTests(driver);
-        tests.testAccesHomePage();
-        tests.testGoToRegisterPage();
-        tests.testGoToLoginPage();
+    public void testAuth(){
+        AuthTests tests = new AuthTests(driver);
+        tests.testLogin();
+        tests.testLogout();
     }
-
-
 }
