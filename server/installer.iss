@@ -33,7 +33,7 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName=C:\{#MyAppShortName}
-DisableDirPage=yes
+DisableDirPage=no
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=.\build
@@ -81,7 +81,9 @@ Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""N
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Node Out"" program=""{pf64}\nodejs\node.exe"" dir=out action=allow enable=yes"; Flags: runhidden;
 
 ; Add System Service
-Filename: "{app}\{#NSSM}"; Parameters: "install {#MyAppShortName} ""{pf64}\nodejs\node.exe"" ""{app}\app.js"" ""8080"""; Flags: runhidden;
+Filename: "{app}\{#NSSM}"; Parameters: "install {#MyAppShortName} ""{pf64}\nodejs\node.exe"" ""\""{app}\app.js\"" ""8080"""; Flags: runhidden;
+Filename: "{app}\{#NSSM}"; Parameters: "set {#MyAppShortName} AppStdout ""{app}\stdout.log"" "; Flags: runhidden;
+Filename: "{app}\{#NSSM}"; Parameters: "set {#MyAppShortName} AppStderr ""{app}\stderr.log"" "; Flags: runhidden;
 Filename: "{sys}\net.exe"; Parameters: "start {#MyAppShortName}"; Flags: runhidden;
 
 
