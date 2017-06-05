@@ -11,6 +11,11 @@ export default class PostItem extends React.Component {
         };
     }
 
+    convert(image) {
+        console.log(image);
+        return image;
+        
+    }
 
     link(props) {
      return   <Link to={`/post/${this.state.id}`}>
@@ -25,22 +30,22 @@ export default class PostItem extends React.Component {
                 <h3>
                     {this.link(this.props.data.title)}
                 </h3> 
-                <span>By {this.props.data.author.username} < span className="comments">8 Comments</span></span>
+                <span>By {this.props.data.author.username} < span className="comments">{this.props.data.comments.length} Comments</span></span>
 
                 <span className="vote">
                     <i className="glyphicon glyphicon-chevron-up" ></i>
                     <span className="label label-primary">10</span>
                     <i className="glyphicon glyphicon-chevron-down" ></i>
                 </span>  
-                {this.props.data.img ?
+                {this.props.data.image ?
                     <div className="view">
-                        {this.link(<img alt="post_image" src={require(`../../img/${this.props.data.img}`)} />)}
+                        {this.link(<img className="postimg" alt="post_image" src={`${this.props.data.image}`} />)}
                     </div>
                     : 
                     <div className="view">
-                        <img alt="post_image" src={require(`../../img/default.jpg`)} />
+                        <img className="postimg" alt="post_image" src={require(`../../img/default.jpg`)} />
                     </div>
-                    }
+                }
                     <div className="data">
                         <p>{this.props.data.content}</p>
                         <span>

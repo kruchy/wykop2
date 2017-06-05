@@ -34,6 +34,7 @@ export default class PostContent extends React.Component {
 
     render() {
         const thisDate = new Date();
+        console.log(this.state.data)
         return (
             <div className="postContent">
                 <h1>
@@ -45,7 +46,7 @@ export default class PostContent extends React.Component {
                 <br>
                 </br>
                 <p className="datePost">
-                    {"Posted on " + thisDate.toUTCString()}
+                    {"Posted on " + this.state.data.created_at}
                 </p>
                 {(this.state.data.length !== 0) &&
                     <CommentsContainer comments={this.state.data.comments} postid={this.state.data._id} />
