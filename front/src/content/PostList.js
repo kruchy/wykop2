@@ -98,6 +98,7 @@ export default class PostList extends React.Component {
                 format: 'json'
             },
             success: function (response) {
+                console.log(response.posts);
                 this.setState({ data: response["posts"] });
             }.bind(this),
 

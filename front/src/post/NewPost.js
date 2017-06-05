@@ -34,12 +34,12 @@ export default class NewPost extends React.Component {
         const content = encodeURIComponent(this.state.post.content);
         const img = encodeURIComponent(this.state.img);
 
-        console.log(img);
-
-        const formData = `title=${title}&content=${content}&img=${img}&token=${Auth.getToken()}`;
+        const formData = `title=${title}&content=${content}&image=${img}&token=${Auth.getToken()}`;
 
         $.ajax({
             url: "/posts",
+            enctype: 'multipart/form-data',
+            processData: false,
             type: "post",
             data: formData,
             success: function (response) {
