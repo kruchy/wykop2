@@ -20,8 +20,8 @@
     "build-front": "npm install --prefix ../front && npm run build --prefix ../front",
     "distro-script": "rimraf ./build && node distro",
     "dist": "npm run build-front && npm install && npm run distro-script",
-    "lint": "jshint **/*.js",
-    "lint-ci": "jshint --reporter node_modules/jshint-teamcity/teamcity.js **/*.js"
+    "lint": "jshint ./src/**/*.js",
+    "lint-ci": "jshint -- --reporter node_modules/jshint-teamcity/teamcity.js ./src/**/*.js"
   },
   "dependencies": {
     "basic-auth-mongoose": "^0.1.1",
