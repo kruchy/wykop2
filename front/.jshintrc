@@ -85,6 +85,7 @@
 
     // Custom Globals
     "globals"       : {
-      "react": true
+      "react": true,
+      "require": true
       }
 }

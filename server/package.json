@@ -21,7 +21,7 @@
     "distro-script": "rimraf ./build && node distro",
     "dist": "npm run build-front && npm install && npm run distro-script",
     "lint": "jshint ./src/**/*.js",
-    "lint-ci": "jshint -- --reporter node_modules/jshint-teamcity/teamcity.js ./src/**/*.js"
+    "lint-ci": "jshint --reporter node_modules/jshint-teamcity/teamcity.js ./src/**/*.js"
   },
   "dependencies": {
     "basic-auth-mongoose": "^0.1.1",
