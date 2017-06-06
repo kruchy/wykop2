@@ -13,7 +13,8 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "react-scripts": "0.9.5"
+    "react-scripts": "0.9.5",
+    "jshint": "^2.9.4"
   },
   "scripts": {
     "start": "react-scripts start",
