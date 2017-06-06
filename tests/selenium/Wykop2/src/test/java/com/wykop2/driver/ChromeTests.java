@@ -14,7 +14,7 @@ public class ChromeTests extends WebDriverTests {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("chromedriver.exe").getFile());
         System.setProperty("webdriver.chrome.driver",file.getAbsolutePath());
-
+        omitContent = true;
         return new ChromeDriver();
     }
 

@@ -1,6 +1,5 @@
 package com.wykop2.testcase;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,9 +11,9 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Marek on 2017-06-05.
  */
-public class ConnectivityTests extends TestCase{
+public class NavigationTests extends TestCase{
 
-    public ConnectivityTests(WebDriver driver){
+    public NavigationTests(WebDriver driver){
         super(driver);
     }
 
@@ -26,7 +25,7 @@ public class ConnectivityTests extends TestCase{
     public void testGoToRegisterPage(){
         WebElement element = driver.findElement(By.xpath("//*[@id=\"content\"]/div/div/header/div/div/ul/li[2]/a"));
         element.click();
-        List<WebElement> elements = driver.findElements(By.xpath("//*[@id=\"content\"]/div/div/div/div/div/div[1]/div/h1"));
+        List<WebElement> elements = driver.findElements(By.xpath(h1CaptionXpath));
         assertEquals(1,elements.size());
         assertEquals("Rejestracja",elements.get(0).getText());
     }
@@ -34,7 +33,7 @@ public class ConnectivityTests extends TestCase{
     public void testGoToLoginPage(){
         WebElement element = driver.findElement(By.xpath("//*[@id=\"content\"]/div/div/header/div/div/ul/li[1]/a"));
         element.click();
-        List<WebElement> elements = driver.findElements(By.xpath("//*[@id=\"content\"]/div/div/div/div/div/div[1]/div/h1"));
+        List<WebElement> elements = driver.findElements(By.xpath(h1CaptionXpath));
         assertEquals(1,elements.size());
         assertEquals("Logowanie",elements.get(0).getText());
     }
